@@ -2,7 +2,7 @@
 #include "Pion.hpp"
 
 //on met Pion:: pour dire qu'on travaille dans la classe Pion
-Pion::Pion(int x, int y, int color){
+Pion::Pion(int x, int y, int color) {
   posX = x;
   posY = y;
 
@@ -13,7 +13,7 @@ Pion::Pion(int x, int y, int color){
   this->color = color;
 }
 
-void Pion::move(int x, int y){
+void Pion::move(int x, int y) {
   posX += x;
   posY += y;
 }

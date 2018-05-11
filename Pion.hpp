@@ -5,13 +5,13 @@
 
 using namespace std;
 
-class Pion{
+class Pion {
   private: //ces attributs ne sont visibles que dans la classe Pion
     int posX; //position du pion en X
     int posY; //position du pion en Y
     int color; //pour l'instant 0 = blanc et 1 = noir
 
-  private: //ces attributs sont visible dans la classe Pion et dans leurs descendants
+  protected: //ces attributs sont visible dans la classe Pion et dans leurs descendants
 
   public: //ces attributs sont visibles partout
     Pion(){}; //constructeur par défaut
