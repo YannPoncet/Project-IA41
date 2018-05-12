@@ -24,6 +24,9 @@ class Plateau {
     /* Moves a pawn from one place to another without verifications */
     void moveFromTo(int fromX, int fromY, int toX, int toY);
 
+    /* Add the pawn value at the x:y location */
+    void addNewPawn(int x, int y, int value);
+
     /* Returns true if a cell is empty */
     bool isFreeAt(int x, int y);
 

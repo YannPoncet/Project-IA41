@@ -17,6 +17,10 @@ void Plateau::reset() {
   } //The gameMatrix is now filled with 0s
 }
 
+void Plateau::addNewPawn(int x, int y, int value) {
+  this->gameMatrix[x][y]=value;
+}
+
 void Plateau::moveFromTo(int fromX, int fromY, int toX, int toY) {
   //We're supposing the we can move here
   gameMatrix[toX][toY] = gameMatrix[fromX][fromY];
