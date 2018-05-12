@@ -3,23 +3,22 @@
 
 Game::Game() {
   this->plateau = new Plateau(5);
+  this->gameFrame = new GameFrame();
 }
 
 void Game::start() {
-  mainWindow.create(sf::VideoMode(1024,768,32),"Teeko du futur");
   loop();
 }
 
 void Game::loop() {
-  while (mainWindow.isOpen())
+
+  //TO REMOVE
+  plateau->addNewPawn(1,2,2);
+  plateau->addNewPawn(4,4,1);
+  //END of TO REMOVE
+
+  while(gameFrame->isOpen())
   {
-    sf::Event event;
-    while (mainWindow.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-            mainWindow.close();
-    }
-    mainWindow.clear(sf::Color(173,218,129));
-    mainWindow.display();
+    gameFrame->draw(plateau->getGameMatrix());
   }
 }

@@ -18,6 +18,9 @@ class Plateau {
     Plateau(int nbCells);
     ~Plateau(){};
 
+    /* Getters and setters */
+    vector<vector<int>> getGameMatrix();
+
     /* Resets the gameMatrix to 0s */
     void reset();
 

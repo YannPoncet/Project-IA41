@@ -11,6 +11,10 @@ Plateau::Plateau(int nbCells) {
 
 }
 
+vector<vector<int>> Plateau::getGameMatrix() {
+  return this->gameMatrix;
+}
+
 void Plateau::reset() {
   for(int i=0; i<this->nbCells; i++) {
     this->gameMatrix[i].resize(this->nbCells); //Initialize all the cols
