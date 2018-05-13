@@ -8,9 +8,11 @@
 
 using namespace std;
 
-class GameFrame { 
+class GameFrame {
   private:
     sf::RenderWindow window;
+    //vector<sf::Sprite> sprites;
+    sf::Sprite background;
     void GameLoop();
 
 
