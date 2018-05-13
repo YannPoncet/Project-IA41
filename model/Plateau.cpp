@@ -44,10 +44,14 @@ int Plateau::hasSomeoneWon() {
       currentVal = this->gameMatrix[x][y];
       if(currentVal == 1 && !firstTested) { //we find the first pawn of the first player
         firstTested = true;
-        return this->testPattern(x,y,currentVal);
+        int result = 0;
+        if((result = this->testPattern(x,y,currentVal))==1)
+          return result;
       } else if(currentVal == 2 && !secondTested) { //we find the first pawn of the second player
         secondTested = true;
-        return this->testPattern(x,y,currentVal);
+        int result = 0;
+        if((result = this->testPattern(x,y,currentVal))==2)
+          return result;
       }
     }
   }
