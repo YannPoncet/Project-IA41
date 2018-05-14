@@ -2,15 +2,19 @@
 #include "GameFrame.hpp"
 
 GameFrame::GameFrame() {
-  window.create(sf::VideoMode(1350,675,32),"Teeko du futur");
+  window.create(sf::VideoMode(width,height,32),"Teeko du futur");
   window.clear(sf::Color(173,218,129));
   window.display();
 
-  sf::Texture texture;
-  if (!texture.loadFromFile("ressources/gameSprites/background.png")) {
+  this->textureManager = new TextureManager;
+
+  if (!bgTexture.loadFromFile("ressources/gameSprites/background.png")) {
     printf("Failed to load the background");
   }
-  background.setTexture(texture);
+}
+
+GameFrame::~GameFrame(){
+  delete this->textureManager;
 }
 
 bool GameFrame::isOpen() {
@@ -27,7 +31,13 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   }
 
   window.clear(sf::Color(173,218,129));
+
+  sf::Sprite background;
+  sf::Texture texture = textureManager->getTextureByName("background");
+  background.setTexture(texture);
+  background.scale(widthFactor, heightFactor);
   window.draw(background);
+
 
   /* All what will be printed is to put here, after the clear and the display */
   sf::Text text;
