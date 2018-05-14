@@ -10,6 +10,7 @@ using namespace std;
 
 class Game {
   private:
+    int phase;
     void GameLoop();
     GameFrame* gameFrame;
     Plateau* plateau;

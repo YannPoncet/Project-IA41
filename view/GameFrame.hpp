@@ -19,7 +19,6 @@ class GameFrame {
     sf::RenderWindow window;
 
     TextureManager* textureManager;
-    //vector<sf::Texture> textures; TODO
     sf::Texture bgTexture;
     void GameLoop();
 
@@ -29,6 +28,11 @@ class GameFrame {
     ~GameFrame();
 
     void draw(vector<vector<int>> matrix);
+
+    vector<int> phase1(vector<vector<int>> matrix);
+    vector<int> phase2(vector<vector<int>> matrix);
+    vector<int> phase3(vector<vector<int>> matrix);
+
     bool isOpen();
 };
 

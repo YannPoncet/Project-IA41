@@ -21,15 +21,36 @@ bool GameFrame::isOpen() {
   return window.isOpen();
 }
 
-void GameFrame::draw(vector<vector<int>> matrix) {
+vector<int> GameFrame::phase2(vector<vector<int>> matrix) {
   sf::Event event;
+  vector<int> coords;
 
   while (window.pollEvent(event))
   {
-      if (event.type == sf::Event::Closed)
-          window.close();
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      } else if(event.type == sf::Event::MouseButtonPressed) {
+        int x = event.mouseButton.x/widthFactor;
+        int y = event.mouseButton.y/heightFactor;
+
+        if(x>=200 && y>=200) {
+          x=(x-200)/200;
+          y=(y-175)/200;
+
+          if((unsigned)x<matrix.size() && (unsigned)y<matrix.size()) {
+            coords.push_back(x);
+            coords.push_back(y);
+          }
+        }
+      }
   }
 
+  draw(matrix);
+
+  return coords;
+}
+
+void GameFrame::draw(vector<vector<int>> matrix) {
   window.clear(sf::Color(173,218,129));
 
   sf::Sprite background;
@@ -37,9 +58,6 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   background.setTexture(backgroundTexture);
   background.scale(widthFactor, heightFactor);
   window.draw(background);
-
-
-
 
   /* All what will be printed is to put here, after the clear and the display */
   sf::Text text;
