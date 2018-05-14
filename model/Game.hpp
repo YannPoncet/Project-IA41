@@ -10,7 +10,8 @@ using namespace std;
 
 class Game {
   private:
-    int phase;
+    int phase; //Phase of the game (actually 1 for menus, 2 for pawn placement, 3 for pawn movements, 4 for victory screen ?)
+    int turn; //Indicates which player is playing
     void GameLoop();
     GameFrame* gameFrame;
     Plateau* plateau;
@@ -21,7 +22,7 @@ class Game {
     ~Game(){};
 
     void start();
-
+    void switchTurn();
 };
 
 #endif

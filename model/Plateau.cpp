@@ -90,3 +90,15 @@ int Plateau::testPattern(int x, int y, int currentVal) {
   }
   return 0; //we have tested all the patterns, none of them were "victorious", so the currentVal player has not won yet
 }
+
+int Plateau::nbPawns() {
+  int nb = 0;
+  for(int x=0; x<this->nbCells; x++) {
+    for(int y=0; y<this->nbCells; y++) {
+      if(this->gameMatrix[x][y] != 0) {
+        nb++;
+      }
+    }
+  }
+  return nb;
+}

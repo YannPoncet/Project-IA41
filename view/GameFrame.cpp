@@ -21,7 +21,7 @@ bool GameFrame::isOpen() {
   return window.isOpen();
 }
 
-vector<int> GameFrame::phase2(vector<vector<int>> matrix) {
+vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
   sf::Event event;
   vector<int> coords;
 

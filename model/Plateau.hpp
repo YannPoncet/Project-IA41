@@ -35,6 +35,9 @@ class Plateau {
 
     /* If someone has won, returns its number, 0 otherwise */
     int hasSomeoneWon();
+
+    /* Counts the number of pawns in the gameMatrix */
+    int nbPawns();
 };
 
 #endif
