@@ -33,10 +33,12 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   window.clear(sf::Color(173,218,129));
 
   sf::Sprite background;
-  sf::Texture texture = textureManager->getTextureByName("background");
-  background.setTexture(texture);
+  sf::Texture backgroundTexture = textureManager->getTextureByName("background");
+  background.setTexture(backgroundTexture);
   background.scale(widthFactor, heightFactor);
   window.draw(background);
+
+
 
 
   /* All what will be printed is to put here, after the clear and the display */
@@ -53,16 +55,19 @@ void GameFrame::draw(vector<vector<int>> matrix) {
 
   for(int x=0; (unsigned)x<matrix.size(); x++) {
     for(int y=0; (unsigned)y<matrix.size(); y++) {
-      sf::CircleShape shape(20.f);
-      if(matrix[x][y]==0) {
-        shape.setFillColor(sf::Color::Black);
-      } else if(matrix[x][y]==1) {
-        shape.setFillColor(sf::Color::Green);
-      } else if(matrix[x][y]==2) {
-        shape.setFillColor(sf::Color::Blue);
+      if(matrix[x][y]==1 || matrix[x][y]==2) {
+        sf::Sprite pawn;
+        sf::Texture pawnTexture;
+        if(matrix[x][y]==1) {
+          pawnTexture = textureManager->getTextureByName("white");
+        } else if(matrix[x][y]==2) {
+          pawnTexture = textureManager->getTextureByName("black");
+        }
+        pawn.setTexture(pawnTexture);
+        pawn.scale(widthFactor, heightFactor);
+        pawn.setPosition(25*widthFactor+200*widthFactor*(1+x),25*heightFactor+heightFactor*(175+200*y));
+        window.draw(pawn);
       }
-      shape.setPosition(x*60+250, y*60+100);
-      window.draw(shape);
     }
   }
 
