@@ -64,7 +64,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf::Font font;
   font.loadFromFile("ressources/fonts/Julius.ttf");
   text.setFont(font); // font is a sf::Font
-  text.setString(L"Tu t'es enfin mis au boulot, c'est pas trop tôt dis donc !\n\nBon, c'est dégeulasse mais ça suffira pour le début:");
+  text.setString(L"TEEEEEKOOOOOOOOOO WOUHOUUUU AKA le jeu du fun");
   text.setCharacterSize(24); // in pixels, not points!
   text.setFillColor(sf::Color::Black);
   text.setStyle(sf::Text::Bold);
