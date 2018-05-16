@@ -29,7 +29,13 @@ class GameFrame {
 
     void draw(vector<vector<int>> matrix);
 
-    //ButtonEnum phase1(vector<vector<int>> matrix);
+    /**phase1 is for the menus : if it returns
+    * -1 nothing to change
+    * 0 Player1 is Human/AI
+    * 1 Player2 is Human/AI
+    * 2 Start the game
+    */
+    int phase1(vector<vector<int>> matrix);
     vector<int> phase2(vector<vector<int>> matrix, int turn);
     vector<int> phase3(vector<vector<int>> matrix, int turn);
 

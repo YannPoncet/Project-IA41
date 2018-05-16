@@ -6,6 +6,7 @@ Game::Game() {
   this->phase = 2;
   this->plateau = new Plateau(5);
   this->gameFrame = new GameFrame();
+  this->gameState = {0};
 }
 
 void Game::start() {
@@ -21,7 +22,19 @@ void Game::loop() {
 
   while(gameFrame->isOpen())
   {
-    if(phase == 1) {
+    if(phase == 1) { //Phase Menu
+      int gameChangement = gameFrame->phase1(plateau->getGameMatrix());
+      switch(gameChangement){
+        case 0: gameState[0] = (gameState[0]+1)%2; //Player1 changes
+          break;
+        case 1: gameState[1] = (gameState[1]+1)%2; //Player2 changes
+          break;
+        case 2: gameState[2] = (gameState[2]+1)%2; //Start changes
+          break;
+      }
+
+      if(gameState[2] == 1)
+        phase = 2;
 
     } else if(phase == 2) {
       vector<int> coords;

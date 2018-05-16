@@ -21,7 +21,24 @@ bool GameFrame::isOpen() {
   return window.isOpen();
 }
 
-//ButtonEnum GameFrame::phase1(vector<vector<int>> matrix){
+int GameFrame::phase1(vector<vector<int>> matrix){
+  sf::Event event;
+  int gameChangement = -1;
+
+  if("Button Player1 is pressed"){
+    gameChangement = 0;
+  }
+
+  if("Button Player2 is pressed"){
+    gameChangement = 1;
+  }
+
+  if("Button Start is pressed"){
+    gameChangement = 2;
+  }
+
+  return gameChangement;
+}
 
 vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
   sf::Event event;
