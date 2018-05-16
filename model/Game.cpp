@@ -40,9 +40,15 @@ void Game::loop() {
       }
     } else if(phase == 3) {
       vector<int> coords;
-      coords = gameFrame->phase2(plateau->getGameMatrix(), turn);
-      if(coords.size() >= 2) { //If there has been a click on the "plateau"
-        //TODO
+      coords = gameFrame->phase3(plateau->getGameMatrix(), turn);
+      if(coords.size() >= 4) { //If there has been a click on the "plateau"
+         int x1 = coords[0];
+         int y1 = coords[1];
+         int x2 = coords[2];
+         int y2 = coords[3];
+
+         //TODO
+
       }
     }
 

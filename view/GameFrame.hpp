@@ -29,7 +29,7 @@ class GameFrame {
 
     void draw(vector<vector<int>> matrix);
 
-    vector<int> phase1(vector<vector<int>> matrix);
+    //ButtonEnum phase1(vector<vector<int>> matrix);
     vector<int> phase2(vector<vector<int>> matrix, int turn);
     vector<int> phase3(vector<vector<int>> matrix, int turn);
 
