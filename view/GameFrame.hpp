@@ -40,6 +40,8 @@ class GameFrame {
     vector<int> phase3(vector<vector<int>> matrix, int turn, int isPressed);
 
     bool isOpen();
+
+    bool isClicked(string,int,int);
 };
 
 #endif

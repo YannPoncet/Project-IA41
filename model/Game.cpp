@@ -3,7 +3,7 @@
 
 Game::Game() {
   this->turn = 1;
-  this->phase = 2;
+  this->phase = 1;
   this->plateau = new Plateau(5);
   this->gameFrame = new GameFrame();
   this->gameState = {0};

@@ -22,21 +22,35 @@ bool GameFrame::isOpen() {
 }
 
 int GameFrame::phase1(vector<vector<int>> matrix){
-  sf::Event event;
+  draw(matrix);
+
   int gameChangement = -1;
+  sf::Event event;
+  vector<int> coords;
 
-  if("Button Player1 is pressed"){
-    gameChangement = 0;
-  }
+  while (window.pollEvent(event))
+  {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      } else if(event.type == sf::Event::MouseButtonPressed) {
+        int x = event.mouseButton.x;
+        int y = event.mouseButton.y;
 
-  if("Button Player2 is pressed"){
-    gameChangement = 1;
-  }
 
-  if("Button Start is pressed"){
-    gameChangement = 2;
-  }
+        if("Button Player1 is pressed"){
+          gameChangement = 0;
+        }
 
+        if("Button Player2 is pressed"){
+          gameChangement = 1;
+        }
+
+        if(isClicked("play",x,y)){
+          printf("play");
+          gameChangement = 2;
+        }
+      }
+    }
   return gameChangement;
 }
 
@@ -115,6 +129,7 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
   return coords;
 }
 
+
 void GameFrame::draw(vector<vector<int>> matrix) {
   window.clear(sf::Color(173,218,129));
 
@@ -125,17 +140,42 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   window.draw(background);
 
   /* All what will be printed is to put here, after the clear and the display */
-  sf::Text text;
-  sf::Font font;
-  font.loadFromFile("ressources/fonts/Julius.ttf");
-  text.setFont(font); // font is a sf::Font
-  text.setString(L"TEEEEEKOOOOOOOOOO WOUHOUUUU AKA le jeu de bite");
-  text.setCharacterSize(24); // in pixels, not points!
-  text.setFillColor(sf::Color::Black);
-  text.setStyle(sf::Text::Bold);
-  window.draw(text);
 
   /* Menu part */
+  sf::Sprite playButton;
+  sf:: Texture playButtonTexture = textureManager->getTextureByName("play");
+  playButton.setTexture(playButtonTexture);
+  playButton.setScale(widthFactor, heightFactor);
+  playButton.setPosition(textureManager->getXCoordinates("play"),textureManager->getYCoordinates("play"));
+  window.draw(playButton);
+
+  sf::Sprite resetButton;
+  sf:: Texture resetButtonTexture = textureManager->getTextureByName("reset");
+  resetButton.setTexture(resetButtonTexture);
+  resetButton.setScale(widthFactor, heightFactor);
+  resetButton.setPosition(textureManager->getXCoordinates("reset"),textureManager->getYCoordinates("reset"));
+  window.draw(resetButton);
+
+  sf::Sprite quitButton;
+  sf:: Texture quitButtonTexture = textureManager->getTextureByName("quit");
+  quitButton.setTexture(quitButtonTexture);
+  quitButton.setScale(widthFactor, heightFactor);
+  quitButton.setPosition(textureManager->getXCoordinates("quit"),textureManager->getYCoordinates("quit"));
+  window.draw(quitButton);
+
+  sf::Sprite player1Button;
+  sf:: Texture player1ButtonTexture = textureManager->getTextureByName("player1_1");
+  player1Button.setTexture(player1ButtonTexture);
+  player1Button.setScale(widthFactor, heightFactor);
+  player1Button.setPosition(textureManager->getXCoordinates("player1"),textureManager->getYCoordinates("player1"));
+  window.draw(player1Button);
+
+  sf::Sprite player2Button;
+  sf:: Texture player2ButtonTexture = textureManager->getTextureByName("player2_2");
+  player2Button.setTexture(player2ButtonTexture);
+  player2Button.setScale(widthFactor, heightFactor);
+  player2Button.setPosition(textureManager->getXCoordinates("player2"),textureManager->getYCoordinates("player2"));
+  window.draw(player2Button);
 
 
   for(int x=0; (unsigned)x<matrix.size(); x++) {
@@ -158,3 +198,13 @@ void GameFrame::draw(vector<vector<int>> matrix) {
 
   window.display();
 }
+
+bool GameFrame::isClicked(string s,int X,int Y) {
+        if(X>=textureManager->getXCoordinates(s) && Y>=textureManager->getYCoordinates(s) && X<=textureManager->getXLimit(s) && Y<=textureManager->getYLimit(s)) {
+  printf("true");
+          return true;
+        }
+        printf("false");
+    return false;
+
+  }
