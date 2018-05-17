@@ -67,7 +67,7 @@ void Game::loop() {
              x2 = coords[0];
              y2 = coords[1];
              //cout << "Points: " << x1 << ":" << y1 << "    " << x2 << ":" << y2 << endl;
-             if ( (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2)) ){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
+             if (isItAt1From(x1,x2,y1,y2) && (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2))){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
                 plateau->moveFromTo(x1, y1, x2, y2);
                 switchTurn();
                 if(plateau->hasSomeoneWon()) {
@@ -89,4 +89,11 @@ void Game::switchTurn() {
   } else if(turn  == 1) {
     turn = 2;
   }
+}
+
+bool Game::isItAt1From(int x1, int x2, int y1, int y2) {
+  int offsetX = abs(x1-x2);
+  int offsetY = abs(y1-y2);
+
+  return ((offsetX == 1 && offsetY == 1) || (offsetX == 0 && offsetY == 1) || (offsetX == 1 && offsetY == 0));
 }

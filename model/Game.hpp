@@ -24,6 +24,7 @@ class Game {
 
     void start();
     void switchTurn();
+    bool isItAt1From(int x1, int x2, int y1, int y2);
 };
 
 #endif
