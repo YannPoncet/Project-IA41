@@ -19,7 +19,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
+        printf("ta mere boris");
         window.clear();
         window.draw(shape);
         window.display();
