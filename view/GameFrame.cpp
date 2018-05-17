@@ -69,54 +69,49 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
   return coords;
 }
 
-  vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn) {
-    sf::Event event;
-    vector<int> coords;
 
-    int isPressed =0;
+vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPressed) {
+  sf::Event event;
+  vector<int> coords;
 
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed) {
-          window.close();
-        }
+  while (window.pollEvent(event))
+  {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      }
 
-        if( (event.type == sf::Event::MouseButtonPressed) && (isPressed==0) ) { // isPressed is set to 0 while theclick informations hasn't been taken, then pass to 1
-          int x = event.mouseButton.x/widthFactor;
-          int y = event.mouseButton.y/heightFactor;
+      if( event.type == sf::Event::MouseButtonPressed && isPressed==0) { // isPressed is set to 0 while theclick informations hasn't been taken, then pass to 1
+        int x = event.mouseButton.x/widthFactor;
+        int y = event.mouseButton.y/heightFactor;
+        //cout << "drag;";
+        if(x>=200 && y>=200) {
+          x=(x-200)/200;
+          y=(y-175)/200;
 
-          if(x>=200 && y>=200) {
-            x=(x-200)/200;
-            y=(y-175)/200;
+          if((unsigned)x<matrix.size() && (unsigned)y<matrix.size()) {
+            coords.push_back(x);
+            coords.push_back(y);
 
-            if((unsigned)x<matrix.size() && (unsigned)y<matrix.size()) {
-              coords.push_back(x);
-              coords.push_back(y);
-              isPressed=1;
-            }
           }
-
         }
+      }
 
-        if ((event.type == sf::Event::MouseButtonReleased) && (isPressed==1) ){ // Collect the Release informations only if isPressed==1 to avoid errors
-          int x = event.mouseButton.x/widthFactor;
-          int y = event.mouseButton.y/heightFactor;
+      if ((event.type == sf::Event::MouseButtonReleased && isPressed==1 )){ // Collect the Release informations only if isPressed==1 to avoid errors
+        int x2 = event.mouseButton.x/widthFactor;
+        int y2 = event.mouseButton.y/heightFactor;
+        //cout << "drop" << endl;
+        if(x2>=200 && y2>=200) {
+          x2=(x2-200)/200;
+          y2=(y2-175)/200;
 
-          if(x>=200 && y>=200) {
-            x=(x-200)/200;
-            y=(y-175)/200;
-
-            if((unsigned)x<matrix.size() && (unsigned)y<matrix.size()) {
-             coords.push_back(x);
-             coords.push_back(y);
-            }
+          if((unsigned)x2<matrix.size() && (unsigned)y2<matrix.size()) {
+           coords.push_back(x2);
+           coords.push_back(y2);
+          }
         }
-
-    }
+      }
   }
-
   draw(matrix);
-
   return coords;
 }
 

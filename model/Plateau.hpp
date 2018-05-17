@@ -38,6 +38,9 @@ class Plateau {
 
     /* Counts the number of pawns in the gameMatrix */
     int nbPawns();
+
+    /* Returns value at x:y */
+    int getValue(int x, int y);
 };
 
 #endif

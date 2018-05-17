@@ -37,7 +37,7 @@ class GameFrame {
     */
     int phase1(vector<vector<int>> matrix);
     vector<int> phase2(vector<vector<int>> matrix, int turn);
-    vector<int> phase3(vector<vector<int>> matrix, int turn);
+    vector<int> phase3(vector<vector<int>> matrix, int turn, int isPressed);
 
     bool isOpen();
 };

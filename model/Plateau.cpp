@@ -102,3 +102,7 @@ int Plateau::nbPawns() {
   }
   return nb;
 }
+
+int Plateau::getValue(int x, int y) {
+  return this->gameMatrix[x][y];
+}

@@ -14,11 +14,7 @@ void Game::start() {
 }
 
 void Game::loop() {
-
-  //TO REMOVE
-  plateau->addNewPawn(1,2,2);
-  plateau->addNewPawn(4,4,1);
-  //END of TO REMOVE
+  int x1=-1,y1;
 
   while(gameFrame->isOpen())
   {
@@ -47,24 +43,43 @@ void Game::loop() {
           plateau->addNewPawn(x,y,turn);
         }
         switchTurn();
-        if(plateau->nbPawns() == 8) { //All the pawns are placed
+        if(plateau->hasSomeoneWon()) {
+          phase = 4;
+        } else if(plateau->nbPawns() == 8) { //All the pawns are placed
           phase = 3;
         }
       }
     } else if(phase == 3) {
       vector<int> coords;
-      coords = gameFrame->phase3(plateau->getGameMatrix(), turn);
-      if(coords.size() >= 4) { //If there has been a click on the "plateau"
-         int x1 = coords[0];
-         int y1 = coords[1];
-         int x2 = coords[2];
-         int y2 = coords[3];
+      coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
 
-         //TODO
+      if(coords.size() >= 2) { //If there has been a click on the "plateau"
+         x1 = coords[0];
+         y1 = coords[1];
+         int x2,y2;
 
-      }
+         if (x1>=0){
+          do {
+            coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 1);
+          } while ( coords.size() < 2 );
+
+          if(coords.size() >= 2) {
+             x2 = coords[0];
+             y2 = coords[1];
+             //cout << "Points: " << x1 << ":" << y1 << "    " << x2 << ":" << y2 << endl;
+             if ( (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2)) ){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
+                plateau->moveFromTo(x1, y1, x2, y2);
+                switchTurn();
+                if(plateau->hasSomeoneWon()) {
+                  phase = 4;
+                }
+             }
+           }
+         }
+       }
+    } else if(phase == 4) {
+      //Someone has won, print the win screen
     }
-
   }
 }
 
