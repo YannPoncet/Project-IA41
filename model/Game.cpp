@@ -41,8 +41,8 @@ void Game::loop() {
         int y = coords[1];
         if(plateau->isFreeAt(x,y)) {
           plateau->addNewPawn(x,y,turn);
+          switchTurn();
         }
-        switchTurn();
         if(plateau->hasSomeoneWon()) {
           phase = 4;
         } else if(plateau->nbPawns() == 8) { //All the pawns are placed
@@ -79,7 +79,15 @@ void Game::loop() {
        }
     } else if(phase == 4) {
       //We wait untill we reset the gameFrame
-      gameFrame ->phase4(plateau->getGameMatrix(), "Player x has won");
+
+      string winMessage;
+      if(turn == 1) {
+        winMessage = "Player1 has won!\nClick on reset to \nrestart";
+      } else if(turn == 2) {
+        winMessage = "Player2 has won!\nClick on reset to \nrestart";
+      }
+
+      gameFrame ->phase4(plateau->getGameMatrix(), winMessage);
       //Someone has won, print the win screen
     }
   }

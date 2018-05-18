@@ -28,6 +28,7 @@ class GameFrame {
     ~GameFrame();
 
     void draw(vector<vector<int>> matrix);
+    void printTextInTextZone(string textToPrint);
 
     /**phase1 is for the menus : if it returns
     * -1 nothing to change

@@ -23,6 +23,7 @@ bool GameFrame::isOpen() {
 
 int GameFrame::phase1(vector<vector<int>> matrix){
   draw(matrix);
+  printTextInTextZone("\nChoose your settings!");
   window.display();
 
   int gameChangement = -1;
@@ -80,6 +81,11 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
   }
 
   draw(matrix);
+  if(turn == 1) {
+    printTextInTextZone("\nPlayer1 is thinking!");
+  } else if(turn == 2) {
+    printTextInTextZone("\nPlayer2 is thinking!");
+  }
   window.display();
 
   return coords;
@@ -149,6 +155,12 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
     window.draw(pawn);
   }
 
+  if(turn == 1) {
+    printTextInTextZone("\nPlayer1 is thinking!");
+  } else if(turn == 2) {
+    printTextInTextZone("\nPlayer2 is thinking!");
+  }
+
   window.display();
   return coords;
 }
@@ -161,6 +173,7 @@ void GameFrame::phase4(vector<vector<int>> matrix, string message) {
       window.close();
     }
     draw(matrix);
+    printTextInTextZone(message);
     window.display();
   }
 }
@@ -242,3 +255,19 @@ bool GameFrame::isClicked(string s,int X,int Y) {
     return false;
 
   }
+
+void GameFrame::printTextInTextZone(string textToPrint) {
+  int baseX = 1600;
+  int baseY = 280;
+
+  sf::Text text;
+  sf::Font font;
+  font.loadFromFile("ressources/fonts/Lucida.ttf");
+  text.setFont(font);
+  text.setString(textToPrint);
+  text.setCharacterSize(24); // in pixels, not points!
+  text.setFillColor(sf::Color::Black);
+  //text.setStyle(sf::Text::Bold);
+  text.setPosition(baseX*widthFactor, baseY*heightFactor);
+  window.draw(text);
+}
