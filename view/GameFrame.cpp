@@ -23,6 +23,7 @@ bool GameFrame::isOpen() {
 
 int GameFrame::phase1(vector<vector<int>> matrix){
   draw(matrix);
+  window.display();
 
   int gameChangement = -1;
   sf::Event event;
@@ -79,14 +80,21 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
   }
 
   draw(matrix);
+  window.display();
 
   return coords;
 }
 
 
-vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPressed) {
+vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPressed, int x1, int y1) {
   sf::Event event;
   vector<int> coords;
+  bool movement = false;
+
+  if(isPressed == 1 && turn == matrix[x1][y1]) {
+    matrix[x1][y1] = 0;
+    movement = true;
+  }
 
   while (window.pollEvent(event))
   {
@@ -105,7 +113,6 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
           if((unsigned)x<matrix.size() && (unsigned)y<matrix.size()) {
             coords.push_back(x);
             coords.push_back(y);
-
           }
         }
       }
@@ -126,7 +133,36 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
       }
   }
   draw(matrix);
+
+  if(isPressed == 1 && movement) {
+    sf::Sprite pawn;
+    sf::Texture pawnTexture;
+    if(turn == 1) {
+       pawnTexture = textureManager->getTextureByName("white");
+    } else if(turn == 2) {
+      pawnTexture = textureManager->getTextureByName("black");
+    }
+    pawn.setTexture(pawnTexture);
+    pawn.setScale(widthFactor, heightFactor);
+
+    pawn.setPosition(sf::Mouse::getPosition(window).x-75*widthFactor, sf::Mouse::getPosition(window).y-75*heightFactor);
+    window.draw(pawn);
+  }
+
+  window.display();
   return coords;
+}
+
+void GameFrame::phase4(vector<vector<int>> matrix, string message) {
+  sf::Event event;
+  while (window.pollEvent(event))
+  {
+    if (event.type == sf::Event::Closed) {
+      window.close();
+    }
+    draw(matrix);
+    window.display();
+  }
 }
 
 
@@ -195,8 +231,6 @@ void GameFrame::draw(vector<vector<int>> matrix) {
       }
     }
   }
-
-  window.display();
 }
 
 bool GameFrame::isClicked(string s,int X,int Y) {

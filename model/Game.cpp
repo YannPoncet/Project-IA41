@@ -51,7 +51,7 @@ void Game::loop() {
       }
     } else if(phase == 3) {
       vector<int> coords;
-      coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
+      coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0, 0, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
 
       if(coords.size() >= 2) { //If there has been a click on the "plateau"
          x1 = coords[0];
@@ -60,7 +60,7 @@ void Game::loop() {
 
          if (x1>=0){
           do {
-            coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 1);
+            coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 1, x1, y1);
           } while ( coords.size() < 2 );
 
           if(coords.size() >= 2) {
@@ -78,6 +78,8 @@ void Game::loop() {
          }
        }
     } else if(phase == 4) {
+      //We wait untill we reset the gameFrame
+      gameFrame ->phase4(plateau->getGameMatrix(), "Player x has won");
       //Someone has won, print the win screen
     }
   }

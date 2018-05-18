@@ -15,11 +15,11 @@ TextureManager::TextureManager() {
   addTexture("ressources/gameSprites/player2_2.png","player2_2");
 
 
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(height-375*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"play");
+  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(height-300*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"play");
   addButton(std::vector<int> {(int)(width-800*widthFactor),0,300,175},"reset");
   addButton(std::vector<int> {(int)(width-500*widthFactor),0,300,175},"quit");
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(300*heightFactor),600,200},"player1");
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(500*heightFactor),600,200},"player2");
+  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(600*heightFactor),600,200},"player1");
+  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(800*heightFactor),600,200},"player2");
 }
 
 bool TextureManager::addTexture(string path, string name) {
