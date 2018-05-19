@@ -14,11 +14,6 @@ class TextureManager {
     std::unordered_map<std::string, sf::Texture> textures;
     std::unordered_map<std::string, std::vector<int>> buttons;
 
-    int width = 1200;
-    int height = 675;
-    float widthFactor = (float)width/2400;
-    float heightFactor = (float)height/1350;
-
   public:
     TextureManager();
     ~TextureManager(){};
@@ -31,6 +26,7 @@ class TextureManager {
     int getXLimit(string s);
     int getYLimit(string s);
     void addButton(std::vector<int> v, string name);
+    bool isClicked(string s,int,int);
 };
 
 #endif

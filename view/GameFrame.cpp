@@ -32,23 +32,25 @@ int GameFrame::phase1(vector<vector<int>> matrix){
 
   while (window.pollEvent(event))
   {
-      if (event.type == sf::Event::Closed) {
+      if (event.type == sf::Event::Closed ) {
         window.close();
       } else if(event.type == sf::Event::MouseButtonPressed) {
         int x = event.mouseButton.x;
         int y = event.mouseButton.y;
 
+        if(textureManager->isClicked("quit",x,y)) {
+          window.close();
+        }
 
-        if("Button Player1 is pressed"){
+        if(textureManager->isClicked("player1",x,y)){
           gameChangement = 0;
         }
 
-        if("Button Player2 is pressed"){
+        if(textureManager->isClicked("player2",x,y)){
           gameChangement = 1;
         }
 
-        if(isClicked("play",x,y)){
-          printf("play");
+        if(textureManager->isClicked("play",x,y)){
           gameChangement = 2;
         }
       }
@@ -65,8 +67,15 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
       if (event.type == sf::Event::Closed) {
         window.close();
       } else if(event.type == sf::Event::MouseButtonPressed) {
-        int x = event.mouseButton.x/widthFactor;
-        int y = event.mouseButton.y/heightFactor;
+        int x = event.mouseButton.x;
+        int y = event.mouseButton.y;
+
+        if(textureManager->isClicked("quit",x,y)) {
+          window.close();
+        }
+
+        x = x/widthFactor;
+        y = y/heightFactor;
 
         if(x>=200 && y>=200) {
           x=(x-200)/200;
@@ -195,6 +204,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf:: Texture playButtonTexture = textureManager->getTextureByName("play");
   playButton.setTexture(playButtonTexture);
   playButton.setScale(widthFactor, heightFactor);
+  textureManager->addButton(std::vector<int> {xAlignment,(int)(height-300*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"play");
   playButton.setPosition(textureManager->getXCoordinates("play"),textureManager->getYCoordinates("play"));
   window.draw(playButton);
 
@@ -202,6 +212,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf:: Texture resetButtonTexture = textureManager->getTextureByName("reset");
   resetButton.setTexture(resetButtonTexture);
   resetButton.setScale(widthFactor, heightFactor);
+  textureManager->addButton(std::vector<int> {xAlignment,0,(int)(300*widthFactor),(int)(175*heightFactor)},"reset");
   resetButton.setPosition(textureManager->getXCoordinates("reset"),textureManager->getYCoordinates("reset"));
   window.draw(resetButton);
 
@@ -209,6 +220,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf:: Texture quitButtonTexture = textureManager->getTextureByName("quit");
   quitButton.setTexture(quitButtonTexture);
   quitButton.setScale(widthFactor, heightFactor);
+  textureManager->addButton(std::vector<int> {(int)(width-500*widthFactor),0,(int)(300*widthFactor),(int)(175*heightFactor)},"quit");
   quitButton.setPosition(textureManager->getXCoordinates("quit"),textureManager->getYCoordinates("quit"));
   window.draw(quitButton);
 
@@ -216,6 +228,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf:: Texture player1ButtonTexture = textureManager->getTextureByName("player1_1");
   player1Button.setTexture(player1ButtonTexture);
   player1Button.setScale(widthFactor, heightFactor);
+  textureManager->addButton(std::vector<int> {xAlignment,(int)(600*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player1");
   player1Button.setPosition(textureManager->getXCoordinates("player1"),textureManager->getYCoordinates("player1"));
   window.draw(player1Button);
 
@@ -223,6 +236,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   sf:: Texture player2ButtonTexture = textureManager->getTextureByName("player2_2");
   player2Button.setTexture(player2ButtonTexture);
   player2Button.setScale(widthFactor, heightFactor);
+  textureManager->addButton(std::vector<int> {xAlignment,(int)(800*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player2");
   player2Button.setPosition(textureManager->getXCoordinates("player2"),textureManager->getYCoordinates("player2"));
   window.draw(player2Button);
 
@@ -246,15 +260,6 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   }
 }
 
-bool GameFrame::isClicked(string s,int X,int Y) {
-        if(X>=textureManager->getXCoordinates(s) && Y>=textureManager->getYCoordinates(s) && X<=textureManager->getXLimit(s) && Y<=textureManager->getYLimit(s)) {
-  printf("true");
-          return true;
-        }
-        printf("false");
-    return false;
-
-  }
 
 void GameFrame::printTextInTextZone(string textToPrint) {
   int baseX = 1600;

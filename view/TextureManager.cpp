@@ -9,17 +9,14 @@ TextureManager::TextureManager() {
   addTexture("ressources/gameSprites/play.png", "play");
   addTexture("ressources/gameSprites/reset.png","reset");
   addTexture("ressources/gameSprites/quit.png","quit");
-  addTexture("ressources/gameSprites/player1_1.png","player1_1");
-  addTexture("ressources/gameSprites/player1_2.png","player1_2");
-  addTexture("ressources/gameSprites/player2_1.png","player2_1");
-  addTexture("ressources/gameSprites/player2_2.png","player2_2");
 
+  int i,j;
+  for (i=1; i<=2; i++) {
+    for (j=1; j<=4; j++) {
+      addTexture("ressources/gameSprites/player" + std::to_string(i) + "_"+ std::to_string(j) + ".png","player" + std::to_string(i) + "_" + std::to_string(j));
+    }
+  }
 
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(height-300*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"play");
-  addButton(std::vector<int> {(int)(width-800*widthFactor),0,300,175},"reset");
-  addButton(std::vector<int> {(int)(width-500*widthFactor),0,300,175},"quit");
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(600*heightFactor),600,200},"player1");
-  addButton(std::vector<int> {(int)(width-800*widthFactor),(int)(800*heightFactor),600,200},"player2");
 }
 
 bool TextureManager::addTexture(string path, string name) {
@@ -52,4 +49,11 @@ int TextureManager::getXLimit(string s) {
 
 int TextureManager::getYLimit(string s) {
   return this->buttons[s].at(1) + this->buttons[s].at(3);
+}
+
+bool TextureManager::isClicked(string s,int X,int Y) {
+    if(X>=getXCoordinates(s) && Y>=getYCoordinates(s) && X<=getXLimit(s) && Y<=getYLimit(s)) {
+      return true;
+    }
+  return false;
 }

@@ -18,6 +18,8 @@ class GameFrame {
     float heightFactor = (float)height/1350;
     sf::RenderWindow window;
 
+    int xAlignment = (int)(width-800*widthFactor);
+
     TextureManager* textureManager;
     sf::Texture bgTexture;
     void GameLoop();
@@ -43,7 +45,6 @@ class GameFrame {
 
     bool isOpen();
 
-    bool isClicked(string,int,int);
 };
 
 #endif
