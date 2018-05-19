@@ -44,7 +44,7 @@ class GameFrame {
     int phase1(vector<vector<int>> matrix);
     vector<int> phase2(vector<vector<int>> matrix, int turn);
     vector<int> phase3(vector<vector<int>> matrix, int turn, int isPressed, int x1, int y1);
-    void phase4(vector<vector<int>> matrix, string message);
+    int phase4(vector<vector<int>> matrix, string message);
 
     bool isOpen();
 

@@ -16,7 +16,12 @@ class Game {
     GameFrame* gameFrame;
     Plateau* plateau;
     void loop();
-    vector<int> gameState; //[0]Player1: 0=AI,1=Human ; [1]Player2: 0=AI,1=Human ; [2]Start: 0=No,1=Yes
+
+    /**PlayerType:
+    * [0]Player1: 0=Human, 1=Noob AI, 2=Not so bad AI, 3=God AI
+    * [1]Player2: 0=Human ,1=Noob AI, 2=Not so bad AI, 3=God AI
+    */
+    vector<int> playerType;
 
   public:
     Game();

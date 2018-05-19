@@ -27,7 +27,6 @@ int GameFrame::phase1(vector<vector<int>> matrix){
 
   int gameChangement = -1;
   sf::Event event;
-  vector<int> coords;
 
   while (window.pollEvent(event))
   {
@@ -54,6 +53,12 @@ int GameFrame::phase1(vector<vector<int>> matrix){
         if(textureManager->isClicked("play",x,y)){
           gameChangement = 2;
         }
+
+        if(textureManager->isClicked("reset",x,y)){
+          player1State = 1;
+          player2State = 2;
+          gameChangement = 3;
+        }
       }
     }
   return gameChangement;
@@ -76,8 +81,12 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
         }
 
         if(textureManager->isClicked("reset",x,y)) {
-          // TODO reset game state
+          player1State = 1;
+          player2State = 2;
           printf("reset\n");
+          coords.clear();
+          coords.push_back(-1);
+          return coords;
         }
 
         x = x/widthFactor;
@@ -131,8 +140,12 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
         }
 
         if(textureManager->isClicked("reset",x,y)) {
-          // TODO reset game state
-          printf("reset \n");
+          player1State = 1;
+          player2State = 2;
+          printf("reset\n");
+          coords.clear();
+          coords.push_back(-1);
+          return coords;
         }
       }
 
@@ -193,17 +206,33 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
   return coords;
 }
 
-void GameFrame::phase4(vector<vector<int>> matrix, string message) {
+int GameFrame::phase4(vector<vector<int>> matrix, string message){
   sf::Event event;
+  int toDo = -1;
   while (window.pollEvent(event))
   {
     if (event.type == sf::Event::Closed) {
       window.close();
     }
+    else if(event.type == sf::Event::MouseButtonPressed) {
+      int x = event.mouseButton.x;
+      int y = event.mouseButton.y;
+
+      if(textureManager->isClicked("quit",x,y)) {
+        window.close();
+      }
+
+      if(textureManager->isClicked("reset",x,y)){
+        player1State = 1;
+        player2State = 2;
+        toDo = 0; //to say to the game that he has to reset
+      }
+    }
     draw(matrix);
     printTextInTextZone(message);
     window.display();
   }
+  return toDo;
 }
 
 
@@ -297,8 +326,6 @@ void GameFrame::printTextInTextZone(string textToPrint) {
 }
 
 int GameFrame::updatePlayerState(int state) {
-  if (state < 4) {
-    return state + 1;
-  }
-  else return 1;
+  state = state%4+1;
+  return state;
 }

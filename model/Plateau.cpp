@@ -17,7 +17,9 @@ vector<vector<int>> Plateau::getGameMatrix() {
 
 void Plateau::reset() {
   for(int i=0; i<this->nbCells; i++) {
-    this->gameMatrix[i].resize(this->nbCells); //Initialize all the cols
+    for(int j=0; j<this->nbCells; j++) {
+      this->gameMatrix[i][j]=0; //Initialize all the cells
+    }
   } //The gameMatrix is now filled with 0s
 }
 
