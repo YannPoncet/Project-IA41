@@ -19,6 +19,8 @@ class GameFrame {
     sf::RenderWindow window;
 
     int xAlignment = (int)(width-800*widthFactor);
+    int player1State = 1;
+    int player2State = 2;
 
     TextureManager* textureManager;
     sf::Texture bgTexture;
@@ -31,6 +33,7 @@ class GameFrame {
 
     void draw(vector<vector<int>> matrix);
     void printTextInTextZone(string textToPrint);
+    int updatePlayerState(int state);
 
     /**phase1 is for the menus : if it returns
     * -1 nothing to change

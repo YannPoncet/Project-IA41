@@ -5,7 +5,6 @@ GameFrame::GameFrame() {
   window.create(sf::VideoMode(width,height,32),"Teeko du futur");
   window.clear(sf::Color(173,218,129));
   window.display();
-
   this->textureManager = new TextureManager;
 
   if (!bgTexture.loadFromFile("ressources/gameSprites/background.png")) {
@@ -44,10 +43,12 @@ int GameFrame::phase1(vector<vector<int>> matrix){
 
         if(textureManager->isClicked("player1",x,y)){
           gameChangement = 0;
+          player1State = updatePlayerState(player1State);
         }
 
         if(textureManager->isClicked("player2",x,y)){
           gameChangement = 1;
+          player2State = updatePlayerState(player2State);
         }
 
         if(textureManager->isClicked("play",x,y)){
@@ -72,6 +73,11 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
 
         if(textureManager->isClicked("quit",x,y)) {
           window.close();
+        }
+
+        if(textureManager->isClicked("reset",x,y)) {
+          // TODO reset game state
+          printf("reset\n");
         }
 
         x = x/widthFactor;
@@ -115,6 +121,19 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
   {
       if (event.type == sf::Event::Closed) {
         window.close();
+      }
+      if(event.type == sf::Event::MouseButtonPressed) {
+        int x = event.mouseButton.x;
+        int y = event.mouseButton.y;
+
+        if(textureManager->isClicked("quit",x,y)) {
+          window.close();
+        }
+
+        if(textureManager->isClicked("reset",x,y)) {
+          // TODO reset game state
+          printf("reset \n");
+        }
       }
 
       if( event.type == sf::Event::MouseButtonPressed && isPressed==0) { // isPressed is set to 0 while theclick informations hasn't been taken, then pass to 1
@@ -225,7 +244,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   window.draw(quitButton);
 
   sf::Sprite player1Button;
-  sf:: Texture player1ButtonTexture = textureManager->getTextureByName("player1_1");
+  sf:: Texture player1ButtonTexture = textureManager->getTextureByName("player1_" + std::to_string(player1State));
   player1Button.setTexture(player1ButtonTexture);
   player1Button.setScale(widthFactor, heightFactor);
   textureManager->addButton(std::vector<int> {xAlignment,(int)(600*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player1");
@@ -233,7 +252,7 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   window.draw(player1Button);
 
   sf::Sprite player2Button;
-  sf:: Texture player2ButtonTexture = textureManager->getTextureByName("player2_2");
+  sf:: Texture player2ButtonTexture = textureManager->getTextureByName("player2_" + std::to_string(player2State));
   player2Button.setTexture(player2ButtonTexture);
   player2Button.setScale(widthFactor, heightFactor);
   textureManager->addButton(std::vector<int> {xAlignment,(int)(800*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player2");
@@ -275,4 +294,11 @@ void GameFrame::printTextInTextZone(string textToPrint) {
   //text.setStyle(sf::Text::Bold);
   text.setPosition(baseX*widthFactor, baseY*heightFactor);
   window.draw(text);
+}
+
+int GameFrame::updatePlayerState(int state) {
+  if (state < 4) {
+    return state + 1;
+  }
+  else return 1;
 }
