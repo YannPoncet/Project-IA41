@@ -39,54 +39,81 @@ void Game::loop() {
       vector<int> coords;
       coords = gameFrame->phase2(plateau->getGameMatrix(), turn);
 
-      if(coords.size()==1){ //reset
-        plateau->reset();
-        phase = 1;
-      }
-      else if(coords.size() >= 2) { //If there has been a click on the "plateau"
-        cout << "Clicked at: " << coords[0] << ":" << coords[1] << endl;
-        int x = coords[0];
-        int y = coords[1];
-        if(plateau->isFreeAt(x,y)) {
-          plateau->addNewPawn(x,y,turn);
-          switchTurn();
+      if(playerType[turn] == 0) { //if it is a player that is currently playing
+        if(coords.size()==1){ //reset
+          plateau->reset();
+          phase = 1;
         }
+        else if(coords.size() >= 2) { //If there has been a click on the "plateau"
+          cout << "Clicked at: " << coords[0] << ":" << coords[1] << endl;
+          int x = coords[0];
+          int y = coords[1];
+          if(plateau->isFreeAt(x,y)) {
+            plateau->addNewPawn(x,y,turn);
+            switchTurn();
+          }
+          if(plateau->hasSomeoneWon()) {
+            phase = 4;
+          } else if(plateau->nbPawns() == 8) { //All the pawns are placed
+            phase = 3;
+          }
+        }
+      } else { //the IA shall play
+        vector<int> decision;
+        decision = AI::getDecision(phase, turn, playerType[turn], plateau->getGameMatrix());
+
+        //we add the pawn where the AI decided
+        plateau->addNewPawn(decision[0],decision[1],turn);
+        switchTurn();
         if(plateau->hasSomeoneWon()) {
           phase = 4;
         } else if(plateau->nbPawns() == 8) { //All the pawns are placed
           phase = 3;
         }
       }
+
     } else if(phase == 3) {
       vector<int> coords;
       coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0, 0, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
 
-      if(coords.size()==1){ //reset
-        plateau->reset();
-        phase = 1;
-      }
-      else if(coords.size() >= 2) { //If there has been a click on the "plateau"
-         x1 = coords[0];
-         y1 = coords[1];
-         int x2,y2;
+      if(playerType[turn] == 0) { //if it is a player that is currently playing
+        if(coords.size()==1){ //reset
+          plateau->reset();
+          phase = 1;
+        }
+        else if(coords.size() >= 2) { //If there has been a click on the "plateau"
+           x1 = coords[0];
+           y1 = coords[1];
+           int x2,y2;
 
-         if (x1>=0){
-          do {
-            coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 1, x1, y1);
-          } while ( coords.size() < 2 );
+           if (x1>=0){
+            do {
+              coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 1, x1, y1);
+            } while ( coords.size() < 2 );
 
-          if(coords.size() >= 2) {
-             x2 = coords[0];
-             y2 = coords[1];
-             //cout << "Points: " << x1 << ":" << y1 << "    " << x2 << ":" << y2 << endl;
-             if (isItAt1From(x1,x2,y1,y2) && (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2))){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
-                plateau->moveFromTo(x1, y1, x2, y2);
-                switchTurn();
-                if(plateau->hasSomeoneWon()) {
-                  phase = 4;
-                }
+            if(coords.size() >= 2) {
+               x2 = coords[0];
+               y2 = coords[1];
+               //cout << "Points: " << x1 << ":" << y1 << "    " << x2 << ":" << y2 << endl;
+               if (isItAt1From(x1,x2,y1,y2) && (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2))){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
+                  plateau->moveFromTo(x1, y1, x2, y2);
+                  switchTurn();
+                  if(plateau->hasSomeoneWon()) {
+                    phase = 4;
+                  }
+               }
              }
            }
+         }
+       } else { //the IA shall play
+         vector<int> decision;
+         decision = AI::getDecision(phase, turn, playerType[turn], plateau->getGameMatrix());
+
+         //we add the pawn where the AI decided
+         plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);
+         switchTurn();
+         if(plateau->hasSomeoneWon()) {
+           phase = 4;
          }
        }
     } else if(phase == 4) {

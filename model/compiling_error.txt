@@ -1,2 +1,2 @@
-C:/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/6.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt0_c.o):crt0_c.c:(.text.startup+0x2e): undefined reference to `WinMain'
+C:/mingw/bin/../lib/gcc/x86_64-w64-mingw32/6.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt0_c.o):crt0_c.c:(.text.startup+0x2e): undefined reference to `WinMain'
 collect2.exe: error: ld returned 1 exit status

@@ -4,6 +4,7 @@
 #include<iostream>
 
 #include "../view/gameFrame.cpp"
+#include "../ai/AI.cpp"
 #include "Plateau.cpp"
 
 using namespace std;
