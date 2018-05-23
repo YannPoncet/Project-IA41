@@ -6,7 +6,8 @@ Game::Game() {
   this->phase = 1;
   this->plateau = new Plateau(5);
   this->gameFrame = new GameFrame();
-  this->playerType = {0};
+  this->playerType.push_back(0);
+  this->playerType.push_back(1);
 }
 
 void Game::start() {
@@ -39,7 +40,7 @@ void Game::loop() {
       vector<int> coords;
       coords = gameFrame->phase2(plateau->getGameMatrix(), turn);
 
-      if(playerType[turn] == 0) { //if it is a player that is currently playing
+      if(playerType[turn-1] == 0) { //if it is a player that is currently playing
         if(coords.size()==1){ //reset
           plateau->reset();
           phase = 1;
@@ -60,7 +61,7 @@ void Game::loop() {
         }
       } else { //the IA shall play
         vector<int> decision;
-        decision = AI::getDecision(phase, turn, playerType[turn], plateau->getGameMatrix());
+        decision = AI::getDecision(phase, turn, playerType[turn-1], plateau->getGameMatrix());
 
         //we add the pawn where the AI decided
         plateau->addNewPawn(decision[0],decision[1],turn);
@@ -76,7 +77,7 @@ void Game::loop() {
       vector<int> coords;
       coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0, 0, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
 
-      if(playerType[turn] == 0) { //if it is a player that is currently playing
+      if(playerType[turn-1] == 0) { //if it is a player that is currently playing
         if(coords.size()==1){ //reset
           plateau->reset();
           phase = 1;
@@ -107,7 +108,7 @@ void Game::loop() {
          }
        } else { //the IA shall play
          vector<int> decision;
-         decision = AI::getDecision(phase, turn, playerType[turn], plateau->getGameMatrix());
+         decision = AI::getDecision(phase, turn, playerType[turn-1], plateau->getGameMatrix());
 
          //we add the pawn where the AI decided
          plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);
