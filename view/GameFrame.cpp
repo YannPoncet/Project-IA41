@@ -36,25 +36,25 @@ int GameFrame::phase1(vector<vector<int>> matrix){
         int x = event.mouseButton.x;
         int y = event.mouseButton.y;
 
-        if(textureManager->isClicked("quit",x,y)) {
+        if(textureManager->isClicked("quit",x/widthFactor,y/heightFactor)) {
           window.close();
         }
 
-        if(textureManager->isClicked("player1",x,y)){
+        if(textureManager->isClicked("player1_" + std::to_string(player1State),x/clickWidthFactor,y/clickHeightFactor)){
           gameChangement = 0;
           player1State = updatePlayerState(player1State);
         }
 
-        if(textureManager->isClicked("player2",x,y)){
+        if(textureManager->isClicked("player2_" + std::to_string(player2State),x/clickWidthFactor,y/clickHeightFactor)){
           gameChangement = 1;
           player2State = updatePlayerState(player2State);
         }
 
-        if(textureManager->isClicked("play",x,y)){
+        if(textureManager->isClicked("play",x/clickWidthFactor,y/clickHeightFactor)){
           gameChangement = 2;
         }
 
-        if(textureManager->isClicked("reset",x,y)){
+        if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)){
           player1State = 1;
           player2State = 2;
           gameChangement = 3;
@@ -89,8 +89,8 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
           return coords;
         }
 
-        x = x/widthFactor;
-        y = y/heightFactor;
+        x = x/clickWidthFactor;
+        y = y/clickHeightFactor;
 
         if(x>=200 && y>=200) {
           x=(x-200)/200;
@@ -150,8 +150,8 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
       }
 
       if( event.type == sf::Event::MouseButtonPressed && isPressed==0) { // isPressed is set to 0 while theclick informations hasn't been taken, then pass to 1
-        int x = event.mouseButton.x/widthFactor;
-        int y = event.mouseButton.y/heightFactor;
+        int x = event.mouseButton.x/clickWidthFactor;
+        int y = event.mouseButton.y/clickHeightFactor;
         //cout << "drag;";
         if(x>=200 && y>=200) {
           x=(x-200)/200;
@@ -165,8 +165,8 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
       }
 
       if ((event.type == sf::Event::MouseButtonReleased && isPressed==1 )){ // Collect the Release informations only if isPressed==1 to avoid errors
-        int x2 = event.mouseButton.x/widthFactor;
-        int y2 = event.mouseButton.y/heightFactor;
+        int x2 = event.mouseButton.x/clickWidthFactor;
+        int y2 = event.mouseButton.y/clickHeightFactor;
         //cout << "drop" << endl;
         if(x2>=200 && y2>=200) {
           x2=(x2-200)/200;
@@ -237,6 +237,10 @@ int GameFrame::phase4(vector<vector<int>> matrix, string message){
 
 
 void GameFrame::draw(vector<vector<int>> matrix) {
+  //Activation of the factors
+  this->clickWidthFactor = (float)window.getSize().x/2400;
+  this->clickHeightFactor = (float)window.getSize().y/1350;
+
   window.clear(sf::Color(173,218,129));
 
   sf::Sprite background;
@@ -248,45 +252,12 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   /* All what will be printed is to put here, after the clear and the display */
 
   /* Menu part */
-  sf::Sprite playButton;
-  sf:: Texture playButtonTexture = textureManager->getTextureByName("play");
-  playButton.setTexture(playButtonTexture);
-  playButton.setScale(widthFactor, heightFactor);
-  textureManager->addButton(std::vector<int> {xAlignment,(int)(height-300*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"play");
-  playButton.setPosition(textureManager->getXCoordinates("play"),textureManager->getYCoordinates("play"));
-  window.draw(playButton);
 
-  sf::Sprite resetButton;
-  sf:: Texture resetButtonTexture = textureManager->getTextureByName("reset");
-  resetButton.setTexture(resetButtonTexture);
-  resetButton.setScale(widthFactor, heightFactor);
-  textureManager->addButton(std::vector<int> {xAlignment,0,(int)(300*widthFactor),(int)(175*heightFactor)},"reset");
-  resetButton.setPosition(textureManager->getXCoordinates("reset"),textureManager->getYCoordinates("reset"));
-  window.draw(resetButton);
-
-  sf::Sprite quitButton;
-  sf:: Texture quitButtonTexture = textureManager->getTextureByName("quit");
-  quitButton.setTexture(quitButtonTexture);
-  quitButton.setScale(widthFactor, heightFactor);
-  textureManager->addButton(std::vector<int> {(int)(width-500*widthFactor),0,(int)(300*widthFactor),(int)(175*heightFactor)},"quit");
-  quitButton.setPosition(textureManager->getXCoordinates("quit"),textureManager->getYCoordinates("quit"));
-  window.draw(quitButton);
-
-  sf::Sprite player1Button;
-  sf:: Texture player1ButtonTexture = textureManager->getTextureByName("player1_" + std::to_string(player1State));
-  player1Button.setTexture(player1ButtonTexture);
-  player1Button.setScale(widthFactor, heightFactor);
-  textureManager->addButton(std::vector<int> {xAlignment,(int)(600*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player1");
-  player1Button.setPosition(textureManager->getXCoordinates("player1"),textureManager->getYCoordinates("player1"));
-  window.draw(player1Button);
-
-  sf::Sprite player2Button;
-  sf:: Texture player2ButtonTexture = textureManager->getTextureByName("player2_" + std::to_string(player2State));
-  player2Button.setTexture(player2ButtonTexture);
-  player2Button.setScale(widthFactor, heightFactor);
-  textureManager->addButton(std::vector<int> {xAlignment,(int)(800*heightFactor),(int)(600*widthFactor),(int)(200*heightFactor)},"player2");
-  player2Button.setPosition(textureManager->getXCoordinates("player2"),textureManager->getYCoordinates("player2"));
-  window.draw(player2Button);
+  drawButton("play");
+  drawButton("reset");
+  drawButton("quit");
+  drawButton("player1_" + std::to_string(player1State));
+  drawButton("player2_" + std::to_string(player2State));
 
 
   for(int x=0; (unsigned)x<matrix.size(); x++) {
@@ -306,6 +277,15 @@ void GameFrame::draw(vector<vector<int>> matrix) {
       }
     }
   }
+}
+
+void GameFrame::drawButton(string name) {
+  sf::Sprite sprite;
+  sf::Texture texture = textureManager->getTextureByName(name);
+  sprite.setTexture(texture);
+  sprite.setScale(widthFactor, heightFactor);
+  sprite.setPosition(textureManager->getXCoordinates(name)*widthFactor,textureManager->getYCoordinates(name)*heightFactor);
+  window.draw(sprite);
 }
 
 

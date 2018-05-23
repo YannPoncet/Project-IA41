@@ -17,6 +17,19 @@ TextureManager::TextureManager() {
     }
   }
 
+  //Loading all the buttons
+  //-------------------------- x  , y   width, height    name
+  addButton(std::vector<int> {1600, 1050, 600, 200}, "play");
+  addButton(std::vector<int> {1600, 0, 300, 175}, "reset");
+  addButton(std::vector<int> {1900, 0, 300, 175}, "quit");
+  addButton(std::vector<int> {1600, 600, 600, 200}, "player1_1");
+  addButton(std::vector<int> {1600, 600, 600, 200}, "player1_2");
+  addButton(std::vector<int> {1600, 600, 600, 200}, "player1_3");
+  addButton(std::vector<int> {1600, 600, 600, 200}, "player1_4");
+  addButton(std::vector<int> {1600, 800, 600, 200}, "player2_1");
+  addButton(std::vector<int> {1600, 800, 600, 200}, "player2_2");
+  addButton(std::vector<int> {1600, 800, 600, 200}, "player2_3");
+  addButton(std::vector<int> {1600, 800, 600, 200}, "player2_4");
 }
 
 bool TextureManager::addTexture(string path, string name) {
@@ -31,8 +44,9 @@ sf::Texture TextureManager::getTextureByName(string s) {
 }
 
 
-void TextureManager::addButton(std::vector<int> v,string name) {
-  this->buttons.insert({name, v});
+void TextureManager::addButton(std::vector<int> coordinates,string name) {
+  //cout << name << ": " << coordinates[0] << ":" << coordinates[1] << " | " << coordinates[2] << ":" << coordinates[3] << endl;
+  this->buttons.insert({name, coordinates});
 }
 
 int TextureManager::getXCoordinates(string s) {

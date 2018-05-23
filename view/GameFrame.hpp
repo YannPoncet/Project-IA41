@@ -16,6 +16,9 @@ class GameFrame {
     int height = 675;
     float widthFactor = (float)width/2400;
     float heightFactor = (float)height/1350;
+    float clickHeightFactor = (float)width/2400;
+    float clickWidthFactor = (float)width/1350;
+
     sf::RenderWindow window;
 
     int xAlignment = (int)(width-800*widthFactor);
@@ -24,7 +27,7 @@ class GameFrame {
 
     TextureManager* textureManager;
     sf::Texture bgTexture;
-    void GameLoop();
+    void drawButton(string name);
 
 
   public:
