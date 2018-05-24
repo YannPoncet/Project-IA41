@@ -76,11 +76,11 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
         int x = event.mouseButton.x;
         int y = event.mouseButton.y;
 
-        if(textureManager->isClicked("quit",x,y)) {
+        if(textureManager->isClicked("quit",x/clickWidthFactor,y/clickHeightFactor)) {
           window.close();
         }
 
-        if(textureManager->isClicked("reset",x,y)) {
+        if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)) {
           player1State = 1;
           player2State = 2;
           printf("reset\n");
@@ -135,11 +135,11 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
         int x = event.mouseButton.x;
         int y = event.mouseButton.y;
 
-        if(textureManager->isClicked("quit",x,y)) {
+        if(textureManager->isClicked("quit",x/clickWidthFactor,y/clickHeightFactor)) {
           window.close();
         }
 
-        if(textureManager->isClicked("reset",x,y)) {
+        if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)) {
           player1State = 1;
           player2State = 2;
           printf("reset\n");
@@ -218,20 +218,21 @@ int GameFrame::phase4(vector<vector<int>> matrix, string message){
       int x = event.mouseButton.x;
       int y = event.mouseButton.y;
 
-      if(textureManager->isClicked("quit",x,y)) {
+      if(textureManager->isClicked("quit",x/clickWidthFactor,y/clickHeightFactor)) {
         window.close();
       }
 
-      if(textureManager->isClicked("reset",x,y)){
+      if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)){
         player1State = 1;
         player2State = 2;
         toDo = 0; //to say to the game that he has to reset
       }
     }
-    draw(matrix);
-    printTextInTextZone(message);
-    window.display();
+
   }
+  draw(matrix);
+printTextInTextZone(message);
+window.display();
   return toDo;
 }
 
