@@ -5,7 +5,7 @@
 #include<vector>
 #include<math.h>
 
-#include "../ai/MinMax.hpp"
+#include "../ai/MinMax.cpp"
 #include "../model/Plateau.hpp"
 
 
