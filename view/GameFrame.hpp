@@ -36,6 +36,12 @@ class GameFrame {
 
     void draw(vector<vector<int>> matrix);
     void printTextInTextZone(string textToPrint);
+
+    int getPlayer1State();
+    int getPlayer2State();
+    void setPlayer1State(int state);
+    void setPlayer2State(int state);
+    int getCurrentPlayerState(int turn);
     int updatePlayerState(int state);
 
     /**phase1 is for the menus : if it returns

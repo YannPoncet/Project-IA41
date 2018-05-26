@@ -6,8 +6,6 @@ Game::Game() {
   this->phase = 1;
   this->plateau = new Plateau(5);
   this->gameFrame = new GameFrame();
-  this->playerType.push_back(0);
-  this->playerType.push_back(1);
 }
 
 void Game::start() {
@@ -21,29 +19,19 @@ void Game::loop() {
     if(phase == 1) { //Phase Menu
       int gameChangement = gameFrame->phase1(plateau->getGameMatrix());
       switch(gameChangement){
-        case 0: playerType[0] = (playerType[0]+1)%4; //Player1 changes
-          break;
-        case 1: playerType[1] = (playerType[1]+1)%4; //Player2 changes
-          break;
         case 2: phase = 2; //Start
           break;
-        case 3: playerType[0] = 0; //Reset
-                playerType[1] = 0;
-                phase = 1;
-          break;
+        //case 3: resetGame();
+        //  break;
       }
-
-      if(playerType[2] == 1)
-        phase = 2;
 
     } else if(phase == 2) {
       vector<int> coords;
       coords = gameFrame->phase2(plateau->getGameMatrix(), turn);
 
-      if(playerType[turn-1] == 0) { //if it is a player that is currently playing
-        if(coords.size()==1){ //reset
-          plateau->reset();
-          phase = 1;
+      if(isPlayerPlaying()) {
+        if(coords.size()==1){
+          resetGame();
         }
         else if(coords.size() >= 2) { //If there has been a click on the "plateau"
           cout << "Clicked at: " << coords[0] << ":" << coords[1] << endl;
@@ -61,7 +49,7 @@ void Game::loop() {
         }
       } else { //the IA shall play
         vector<int> decision;
-        decision = AI::getDecision(phase, turn, playerType[turn-1], plateau);
+        decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
 
         //we add the pawn where the AI decided
         plateau->addNewPawn(decision[0],decision[1],turn);
@@ -77,10 +65,9 @@ void Game::loop() {
       vector<int> coords;
       coords = gameFrame->phase3(plateau->getGameMatrix(), turn, 0, 0, 0); // isPressed is set to 0 while the pressed informormations are not received, then pass to 1 to catch the release informations
 
-      if(playerType[turn-1] == 0) { //if it is a player that is currently playing
+      if(isPlayerPlaying()) {
         if(coords.size()==1){ //reset
-          plateau->reset();
-          phase = 1;
+          resetGame();
         }
         else if(coords.size() >= 2) { //If there has been a click on the "plateau"
            x1 = coords[0];
@@ -108,7 +95,7 @@ void Game::loop() {
          }
        } else { //the IA shall play
          vector<int> decision;
-         decision = AI::getDecision(phase, turn, playerType[turn-1], plateau);
+         decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
 
          //we add the pawn where the AI decided
          plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);
@@ -128,8 +115,7 @@ void Game::loop() {
       }
 
       if(gameFrame->phase4(plateau->getGameMatrix(), winMessage)==0){ //0:reset
-        plateau->reset();
-        phase = 1;
+        resetGame();
       }
 
       //Someone has won, print the win screen
@@ -150,4 +136,26 @@ bool Game::isItAt1From(int x1, int x2, int y1, int y2) {
   int offsetY = abs(y1-y2);
 
   return ((offsetX == 1 && offsetY == 1) || (offsetX == 0 && offsetY == 1) || (offsetX == 1 && offsetY == 0));
+}
+
+void Game::resetGame() {
+  plateau->reset();
+  phase = 1;
+  turn = 1;
+}
+
+bool Game::isPlayerPlaying() {
+  if (turn == 1) {
+    if ( gameFrame->getPlayer1State() == 1) {
+      return true;
+    }
+    else
+    return false;
+  }
+
+  else if ( gameFrame->getPlayer2State() == 1) {
+    return true;
+  }
+  else
+  return false;
 }
