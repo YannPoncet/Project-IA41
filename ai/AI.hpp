@@ -5,14 +5,15 @@
 #include<vector>
 #include<math.h>
 
-#include "../tools/Graph.cpp"
+#include "../ai/MinMax.hpp"
+#include "../model/Plateau.hpp"
 
 
 using namespace std;
 
 class AI {
   public:
-    static vector<int> getDecision(int phase, int turn, int difficulty, vector<vector<int>> gameMatrix);
+    static vector<int> getDecision(int phase, int turn, int difficulty, Plateau* plateau);
 };
 
 #endif

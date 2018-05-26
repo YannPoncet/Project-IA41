@@ -61,7 +61,7 @@ void Game::loop() {
         }
       } else { //the IA shall play
         vector<int> decision;
-        decision = AI::getDecision(phase, turn, playerType[turn-1], plateau->getGameMatrix());
+        decision = AI::getDecision(phase, turn, playerType[turn-1], plateau);
 
         //we add the pawn where the AI decided
         plateau->addNewPawn(decision[0],decision[1],turn);
@@ -108,7 +108,7 @@ void Game::loop() {
          }
        } else { //the IA shall play
          vector<int> decision;
-         decision = AI::getDecision(phase, turn, playerType[turn-1], plateau->getGameMatrix());
+         decision = AI::getDecision(phase, turn, playerType[turn-1], plateau);
 
          //we add the pawn where the AI decided
          plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);

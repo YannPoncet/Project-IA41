@@ -16,6 +16,7 @@ class Plateau {
   public:
     Plateau(){};
     Plateau(int nbCells);
+    Plateau(int nbCells, vector<vector<int>> gameMatrix);
     ~Plateau(){};
 
     /* Getters and setters */

@@ -8,7 +8,21 @@ Plateau::Plateau(int nbCells) {
   for(int i=0; i<nbCells; i++) {
     gameMatrix[i].resize(nbCells); //Initialize all the cols
   } //The gameMatrix is now filled with 0s
+}
 
+Plateau::Plateau(int nbCells, vector<vector<int>> gameMatrix){
+  this->nbCells = nbCells;
+
+  this->gameMatrix.resize(nbCells); //Initialize the matrix to nbCells colls
+  for(int i=0; i<nbCells; i++) {
+    this->gameMatrix[i].resize(nbCells); //Initialize all the cols
+  } //The gameMatrix is now filled with 0s
+
+  for(int i=0; i<nbCells; i++){
+    for(int j=0; j<nbCells; j++){
+      this->gameMatrix[i][j] = gameMatrix[i][j];
+    }
+  }
 }
 
 vector<vector<int>> Plateau::getGameMatrix() {
