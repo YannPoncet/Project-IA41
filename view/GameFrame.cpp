@@ -55,8 +55,6 @@ int GameFrame::phase1(vector<vector<int>> matrix){
         }
 
         if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)){
-          player1State = 1;
-          player2State = 2;
           gameChangement = 3;
         }
       }
@@ -81,9 +79,6 @@ vector<int> GameFrame::phase2(vector<vector<int>> matrix, int turn) {
         }
 
         if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)) {
-          player1State = 1;
-          player2State = 2;
-          printf("reset\n");
           coords.clear();
           coords.push_back(-1);
           return coords;
@@ -140,9 +135,6 @@ vector<int> GameFrame::phase3(vector<vector<int>> matrix, int turn, int isPresse
         }
 
         if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)) {
-          player1State = 1;
-          player2State = 2;
-          printf("reset\n");
           coords.clear();
           coords.push_back(-1);
           return coords;
@@ -223,8 +215,6 @@ int GameFrame::phase4(vector<vector<int>> matrix, string message){
       }
 
       if(textureManager->isClicked("reset",x/clickWidthFactor,y/clickHeightFactor)){
-        player1State = 1;
-        player2State = 2;
         toDo = 0; //to say to the game that he has to reset
       }
     }
@@ -309,4 +299,27 @@ void GameFrame::printTextInTextZone(string textToPrint) {
 int GameFrame::updatePlayerState(int state) {
   state = state%4+1;
   return state;
+}
+
+int GameFrame::getPlayer1State(){
+    return player1State;
+}
+
+int GameFrame::getPlayer2State(){
+    return player2State;
+}
+
+void GameFrame::setPlayer1State(int state) {
+  player1State = state;
+}
+
+void GameFrame::setPlayer2State(int state) {
+  player2State = state;
+}
+
+int GameFrame::getCurrentPlayerState(int turn) {
+  if (turn == 1) {
+    return getPlayer1State();
+  }
+  else return getPlayer2State();
 }

@@ -18,18 +18,14 @@ class Game {
     Plateau* plateau;
     void loop();
 
-    /**PlayerType:
-    * [0]Player1: 0=Human, 1=Noob AI, 2=Not so bad AI, 3=God AI
-    * [1]Player2: 0=Human ,1=Noob AI, 2=Not so bad AI, 3=God AI
-    */
-    vector<int> playerType;
-
   public:
     Game();
     ~Game(){};
 
     void start();
+    void resetGame();
     void switchTurn();
+    bool isPlayerPlaying();
     bool isItAt1From(int x1, int x2, int y1, int y2);
 };
 
