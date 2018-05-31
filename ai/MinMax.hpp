@@ -5,6 +5,7 @@
 #include<vector>
 #include<math.h>
 #include<unordered_map>
+#include <limits>
 
 #include "../model/Plateau.hpp"
 
@@ -16,10 +17,13 @@ class MinMax {
     //launches a MinMax algorithm while we are in phase 2
     static vector<int> phase2(Plateau* plateau, int player, int turn);
 
-    static int miniMax(vector<vector<int>> moves, Plateau* plateau, int player, int turn, int iteration);
+    //launches the minMax algorithm and returns the move to do
+    vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn);
 
-    //tells if a player wins or if noone wins
-    static int winning(Plateau* plateau, int turn);
+    //the max part of the algorithm
+    int tourMax(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn);
+    //the min part of the algorithm
+    int tourMin(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn);
 
     //returns the evalutation of a state of the game
     static int eval(vector<vector<int>> gameMatrix, int player);
