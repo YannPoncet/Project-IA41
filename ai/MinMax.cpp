@@ -119,29 +119,32 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
 }
 
 vector<int> MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player) {
-  std::unordered_map<int, int[3][2]> pattern4 = {
-    {100, {{1,1},{2,2},{3,3}} }, //diag
-    {100, {{1,0},{0,1},{1,1}} }, //square
-    {100, {{1,0},{2,0},{3,0}} }}; //line
-  std::unordered_map<int, int[2][2]> pattern3 = {
-    {10, {{1,0},{1,1}} }, //square
-    {10, {{1,0},{2,0}} }, //line
-    {10, {{1,1},{2,2}} }}; //diag
-  std::unordered_map<int, int[1][2]> pattern2 = {
-    {1, {{1,1}} }, //diag
-    {1, {{1,0}} }}; //line
+  int nbPattern4 = 3;
+  int pattern4[nbPattern4][4][2]  = {
+    {{100,0},{1,1},{2,2},{3,3}}, //diag
+    {{100,0},{1,0},{0,1},{1,1}}, //square
+    {{100,0},{1,0},{2,0},{3,0}}}; //line
+  int nbPattern3 = 3;
+  int pattern3[nbPattern3][3][2] = {
+    {{10,0},{1,0},{1,1}}, //square
+    {{10,0},{1,0},{2,0}}, //line
+    {{10,0},{1,1},{2,2}}}; //diag
+  int nbPattern2 = 2;
+  int pattern2[nbPattern2][2][2] = {
+    {{1,0},{1,1}}, //diag
+    {{1,0},{1,0}}}; //line
 
 
   vector<int> result;
 
-  /*for(int pat=0; pat<(signed)pattern4.size(); pat++) {
+  for(int pat=0; pat<nbPattern4; pat++) {
     bool testBool = true;
     int coord = 0;
     do {
       int testX = x+pattern4[pat][coord][0];
       int testY = y+pattern4[pat][coord][1];
-      if(testX>=0 && testX<this->nbCells && testY>=0 && testY<this->nbCells) { //if we're outside of the gameMatrix
-        if(this->gameMatrix[testX][testY] != currentVal) {
+      if(testX>=0 && testX<5 && testY>=0 && testY<5) { //if we're outside of the gameMatrix
+        if(gameMatrix[testX][testY] != player) {
           testBool = false;
         }
       } else {
@@ -151,11 +154,51 @@ vector<int> MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, in
     } while(testBool == true && coord <3);
 
     if(testBool == true) { //if test bool is still at true, we have found a victory configuration
-      return currentVal;
+      return {1,pattern4[pat][0][0]};
     }
   }
+  for( int pat=0; pat<nbPattern3; pat++) {
+    bool testBool = true;
+    int coord = 0;
+    testBool = true;
+    coord = 0;
+    do {
+      int testX = x+pattern4[pat][coord][0];
+      int testY = y+pattern4[pat][coord][1];
+      if(testX>=0 && testX<5 && testY>=0 && testY<5) { //if we're outside of the gameMatrix
+        if(gameMatrix[testX][testY] != player) {
+          testBool = false;
+        }
+      } else {
+        testBool = false;
+      }
+      coord++;
+    } while(testBool == true && coord <3);
 
-*/
+    if(testBool == true) { //if test bool is still at true, we have found a victory configuration
+      return {1,pattern3[pat][0][0]};
+    }
+  }
+  for(int pat=0; pat<nbPattern2; pat++) {
+    bool testBool = true;
+    int coord = 0;
+    do {
+      int testX = x+pattern2[pat][coord][0];
+      int testY = y+pattern2[pat][coord][1];
+      if(testX>=0 && testX<5 && testY>=0 && testY<5) { //if we're outside of the gameMatrix
+        if(gameMatrix[testX][testY] != player) {
+          testBool = false;
+        }
+      } else {
+        testBool = false;
+      }
+      coord++;
+    } while(testBool == true && coord <3);
+
+    if(testBool == true) { //if test bool is still at true, we have found a victory configuration
+      return {1,pattern2[pat][0][0]};
+    }
+  }
   return {0,0};
 }
 
