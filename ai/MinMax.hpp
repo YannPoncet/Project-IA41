@@ -28,7 +28,9 @@ class MinMax {
     //returns the evalutation of a state of the game
     static int eval(vector<vector<int>> gameMatrix, int player);
     //used in eval to locate a pattern
-    static vector<int> findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
+    static int findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
+    //test the associoted pattern at the x y coordinates
+    static bool testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player);
 };
 
 #endif
