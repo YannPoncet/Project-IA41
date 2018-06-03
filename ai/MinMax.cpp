@@ -90,26 +90,25 @@ int MinMax::tourMin(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> 
 
 
 int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
-  bool firstTested = true;
-  bool secondTested = true;
   int score1 = 0;
   int score2 = 0;
+  int tmp1 = 0;
+  int tmp2 = 0;
   int score = 0;
 
   for(int x=0; x<5; x++) {
     for(int y=0; y<5; y++) {
       int currentVal = gameMatrix[x][y];
-      vector<int> result;
-      if(firstTested && currentVal == 1) {
-        score1 = findPattern(gameMatrix, x, y, 1);
-        if (score1 > 0) {
-          firstTested = false;
+      if(currentVal == 1) {
+        tmp1 = findPattern(gameMatrix, x, y, 1);
+        if (tmp1 > score1) {
+          score1 = tmp1;
         }
       }
-      if(secondTested && currentVal == 2) {
-        score2 = findPattern(gameMatrix, x, y, 2);
-        if (score2 > 0) {
-          secondTested = false;
+      if(currentVal == 2) {
+        tmp2 = findPattern(gameMatrix, x, y, 2);
+        if (tmp2 > score2) {
+          score2 = tmp2;
         }
       }
     }
