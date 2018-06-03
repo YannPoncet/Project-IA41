@@ -114,9 +114,13 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
     }
   }
 
-  if(player == 1) {
+  if(player == 1 && score1>=100) {
+    score = score1;
+  } else if(player == 1) {
     score = score1 - score2;
-  } else {
+  } else if(player == 2 && score2>=100) {
+    score = score2;
+  } else if(player == 2) {
     score = score2 - score1;
   }
 printf("Score player1 :%d\n",score);
@@ -130,11 +134,15 @@ int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player
     {{100,0}, {1,1},{2,2},{3,3}}, //diag
     {{100,0}, {1,0},{0,1},{1,1}}, //square
     {{100,0}, {0,1},{0,2},{0,3}}, //collumn
-    {{100,0}, {1,0},{2,0},{3,0}}}; //line
+    {{100,0}, {1,0},{2,0},{3,0}}, //line
+
+    {{50,0}, {1,0},{2,1},{3,2}}, //L1
+    {{50,0}, {0,1},{2,3},{3,4}}}; //L2
 
   int nbPattern3 = 4;
   int pattern3[nbPattern3][3][2] = {
-    {{10,0},  {1,0},{1,1}}, //square
+    {{10,0},  {1,0},{1,1}}, //square1
+    {{10,0},  {0,1},{1,1}}, //square2
     {{10,0},  {1,0},{2,0}}, //line
     {{10,0},  {0,1},{0,2}}, //collumn
     {{10,0},  {1,1},{2,2}}}; //diag
