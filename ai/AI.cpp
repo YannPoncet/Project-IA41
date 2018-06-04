@@ -8,9 +8,11 @@ vector<int> AI::getDecision(int phase, int turn, int difficulty, Plateau* platea
 
   if(phase == 2) { //returns a vector of length 2 to know where to put the pawn
 
-    Plateau* newPlateau = new Plateau(5, plateau->getGameMatrix());
-    v = MinMax::minMax(newPlateau, 2, turn, turn);
 
+    Plateau* newPlateau = new Plateau(5, plateau->getGameMatrix());
+    v = MinMax::minMax(newPlateau, 3, turn, turn); //3 of depth
+
+    //cout << "v.x : " << v[0] << "  v.y : " << v[1] << endl;
 
     /* TO REPLACE BELOW
     int x;

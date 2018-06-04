@@ -1,90 +1,102 @@
 #include "MinMax.hpp"
 
 vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int turn){
+
+  int x = -1;
+  int y = -1;
+  int* px = &x;
+  int* py = &y;
+
+  int alpha = std::numeric_limits<int>::min();
+  int beta = std::numeric_limits<int>::max();
+  int* a = &alpha;
+  int* b = &beta;
+
+  turnMax(plateau, profondeur, a, b, px, py, player, turn);
+
+  cout << "minMax move : " <<  x << " " <<  y << endl;
+
   vector<int> move;
-  move.push_back(-1); //x
-  move.push_back(-1); //y
-
-  vector<int> alphaBeta;
-  alphaBeta.push_back(std::numeric_limits<int>::min()); //alpha
-  alphaBeta.push_back(std::numeric_limits<int>::max()); //beta
-
-  tourMax(plateau, profondeur, alphaBeta, move, player, turn);
-
+  move.push_back(x); //x
+  move.push_back(y); //y
   return move;
 }
 
-int MinMax::tourMax(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn){
+int MinMax::turnMax(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn){
   if(plateau->hasSomeoneWon() || p==0)
     return eval(plateau->getGameMatrix(), player);
 
   int u = std::numeric_limits<int>::min();
-  vector<int> action;
-  action.push_back(-1);
-  action.push_back(-1);
+  int actionX = -1;
+  int actionY = -1;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
-        plateau->getGameMatrix()[i][j] = turn;
-        if(int tmp = tourMin(plateau, p-1, alphaBeta,  move, player, turn)>u){ //max
-          action[0] = i;
-          action[1] = j;
+        plateau->addNewPawn(i,j,turn);
+        if(int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, turn)>u){ //max
+          actionX = i;
+          actionY = j;
           u = tmp;
+          cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
-        plateau->getGameMatrix()[i][j] = 0;
+        plateau->addNewPawn(i,j,0);
 
-        if(u>alphaBeta[1]){ //cut branches
-          move[0] = action[0];
-          move[1] = action[1];
+        if(u>*beta){ //cut branches
+          *x = actionX;
+          *y = actionY;
+          cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
-        if(alphaBeta[0]<u)
-          alphaBeta[0]=u;
+        if(*alpha<u)
+          *alpha=u;
       }
     }
   }
 
-  move[0] = action[0];
-  move[1] = action[1];
+  *x = actionX;
+  *y = actionY;
+  cout << "end max move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
-int MinMax::tourMin(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn){
+int MinMax::turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn){
   if(plateau->hasSomeoneWon() || p==0)
     return eval(plateau->getGameMatrix(), player);
 
   int u = std::numeric_limits<int>::max();
-  vector<int> action;
-  action.push_back(-1);
-  action.push_back(-1);
+  int actionX = -1;
+  int actionY = -1;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
-        plateau->getGameMatrix()[i][j] = turn;
-        if(int tmp = tourMax(plateau, p-1, alphaBeta,  move, player, turn)<u){ //max
-          action[0] = i;
-          action[1] = j;
+        plateau->addNewPawn(i,j,turn);
+        if(int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, turn)<u){ //max
+          actionX = i;
+          actionY = j;
           u = tmp;
+          //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
-        plateau->getGameMatrix()[i][j] = 0;
+        plateau->addNewPawn(i,j,0);
 
-        if(u<alphaBeta[0]){ //cut branches
-          move[0] = action[0];
-          move[1] = action[1];
+        if(u<*alpha){ //cut branches
+          *x = actionX;
+          *y = actionY;
+          cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
-        if(alphaBeta[1]>u)
-          alphaBeta[1]=u;
+        if(*beta>u)
+          *beta=u;
       }
     }
   }
 
-  move[0] = action[0];
-  move[1] = action[1];
+  *x = actionX;
+  *y = actionY;
+  cout << "end min move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
@@ -123,7 +135,7 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
   } else if(player == 2) {
     score = score2 - score1;
   }
-printf("Score player1 :%d\n",score);
+//printf("Score player1 :%d\n",score);
   return score;
 }
 

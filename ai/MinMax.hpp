@@ -21,9 +21,9 @@ class MinMax {
     static vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn);
 
     //the max part of the algorithm
-    static int tourMax(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn);
+    static int turnMax(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn);
     //the min part of the algorithm
-    static int tourMin(Plateau* plateau, int p, vector<int> alphaBeta, vector<int> move, int player, int turn);
+    static int turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn);
 
     //returns the evalutation of a state of the game
     static int eval(vector<vector<int>> gameMatrix, int player);
