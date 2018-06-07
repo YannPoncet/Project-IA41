@@ -39,7 +39,7 @@ void Game::loop() {
           int y = coords[1];
           if(plateau->isFreeAt(x,y)) {
             plateau->addNewPawn(x,y,turn);
-            MinMax::eval(plateau->getGameMatrix(), 1);
+            //MinMax::eval(plateau->getGameMatrix(), 1);
             switchTurn();
           }
           if(plateau->hasSomeoneWon()) {

@@ -18,19 +18,20 @@ class MinMax {
     //static vector<int> phase2(Plateau* plateau, int player, int turn);
 
     //launches the minMax algorithm and returns the move to do
-    static vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn);
+    vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn);
 
+  private:
     //the max part of the algorithm
-    static int turnMax(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn);
+    int turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
     //the min part of the algorithm
-    static int turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn);
+    int turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
 
     //returns the evalutation of a state of the game
-    static int eval(vector<vector<int>> gameMatrix, int player);
+    int eval(vector<vector<int>> gameMatrix, int player);
     //used in eval to locate a pattern
-    static int findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
+    int findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
     //test the associoted pattern at the x y coordinates
-    static bool testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player);
+    bool testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player);
 };
 
 #endif

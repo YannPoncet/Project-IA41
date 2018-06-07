@@ -10,7 +10,8 @@ vector<int> AI::getDecision(int phase, int turn, int difficulty, Plateau* platea
 
 
     Plateau* newPlateau = new Plateau(5, plateau->getGameMatrix());
-    v = MinMax::minMax(newPlateau, 3, turn, turn); //3 of depth
+    MinMax* minMax;
+    v = minMax->minMax(newPlateau, 2, turn, turn); //3 of depth
 
     //cout << "v.x : " << v[0] << "  v.y : " << v[1] << endl;
 

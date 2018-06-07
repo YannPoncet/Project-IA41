@@ -4,15 +4,11 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
 
   int x = -1;
   int y = -1;
-  int* px = &x;
-  int* py = &y;
 
   int alpha = std::numeric_limits<int>::min();
   int beta = std::numeric_limits<int>::max();
-  int* a = &alpha;
-  int* b = &beta;
 
-  turnMax(plateau, profondeur, a, b, px, py, player, turn);
+  turnMax(plateau, profondeur, alpha, beta, x, y, player, turn);
 
   cout << "minMax move : " <<  x << " " <<  y << endl;
 
@@ -22,9 +18,17 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
   return move;
 }
 
-int MinMax::turnMax(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn){
-  if(plateau->hasSomeoneWon() || p==0)
-    return eval(plateau->getGameMatrix(), player);
+int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+  if(plateau->hasSomeoneWon() || p==0){
+    int tmp=eval(plateau->getGameMatrix(), player);
+    cout << "MAX eval = " << tmp << endl;
+    return tmp;
+  }
+
+  if(plateau->nbPawns()==8){
+    //TODO phase 3
+    return turnMax(plateau, p-1, alpha, beta, x, y, player, turn);
+  }
 
   int u = std::numeric_limits<int>::min();
   int actionX = -1;
@@ -34,36 +38,45 @@ int MinMax::turnMax(Plateau* plateau, int p, int* alpha, int* beta, int* x, int*
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
-        if(int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, turn)>u){ //max
+        if(int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1)>u){ //max
           actionX = i;
           actionY = j;
           u = tmp;
-          cout << "MAX u=tmp  " << u << " " << *alpha << endl;
+          //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u>*beta){ //cut branches
-          *x = actionX;
-          *y = actionY;
-          cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
+        if(u>beta){ //cut branches
+          x = actionX;
+          y = actionY;
+          //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
-        if(*alpha<u)
-          *alpha=u;
+        if(alpha<u)
+          alpha=u;
       }
     }
   }
 
-  *x = actionX;
-  *y = actionY;
-  cout << "end max move : " <<  *x << " " <<  *y << endl;
+  x = actionX;
+  y = actionY;
+  //cout << "end max move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
-int MinMax::turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int* y, int player, int turn){
-  if(plateau->hasSomeoneWon() || p==0)
-    return eval(plateau->getGameMatrix(), player);
+int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+  if(plateau->hasSomeoneWon() || p==0){
+    int tmp=eval(plateau->getGameMatrix(), player);
+    //cout << "NB pawns = " << plateau->nbPawns() << endl;
+    //cout << "MIN eval = " << tmp << endl;
+    return tmp;
+  }
+
+  if(plateau->nbPawns()==8){
+    //TODO phase 3
+    return turnMin(plateau, p-1, alpha, beta, x, y, player, turn);
+  }
 
   int u = std::numeric_limits<int>::max();
   int actionX = -1;
@@ -73,7 +86,7 @@ int MinMax::turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int*
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
-        if(int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, turn)<u){ //max
+        if(int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1)<u){ //max
           actionX = i;
           actionY = j;
           u = tmp;
@@ -81,22 +94,22 @@ int MinMax::turnMin(Plateau* plateau, int p, int* alpha, int* beta, int* x, int*
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u<*alpha){ //cut branches
-          *x = actionX;
-          *y = actionY;
-          cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
+        if(u<alpha){ //cut branches
+          x = actionX;
+          y = actionY;
+          //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
-        if(*beta>u)
-          *beta=u;
+        if(beta>u)
+          beta=u;
       }
     }
   }
 
-  *x = actionX;
-  *y = actionY;
-  cout << "end min move : " <<  *x << " " <<  *y << endl;
+  x = actionX;
+  y = actionY;
+  //cout << "end min move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
