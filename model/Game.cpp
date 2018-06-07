@@ -129,7 +129,15 @@ void Game::switchTurn() {
     turn = 1;
   } else if(turn  == 1) {
     turn = 2;
+  }/*
+  for(int i=0; i<5; i++){
+    for(int j=0; j<5 ;j++){
+      cout << plateau->getGameMatrix()[i][j] << " ";
+    }
+    cout << endl;
   }
+  cout << "ici" << endl;
+*/
 }
 
 bool Game::isItAt1From(int x1, int x2, int y1, int y2) {

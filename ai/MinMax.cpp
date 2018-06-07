@@ -19,9 +19,18 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
 }
 
 int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+  /*int ev = eval(plateau->getGameMatrix(), player);
+  cout << "Turn max, eval = " << ev << endl;
+  for(int i=0; i<5; i++){
+    for(int j=0; j<5 ;j++){
+      cout << plateau->getGameMatrix()[i][j] << " ";
+    }
+    cout << endl;
+  }*/
+
+
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
-    cout << "MAX eval = " << tmp << endl;
     return tmp;
   }
 
@@ -38,10 +47,22 @@ int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
-        if(int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1)>u){ //max
+
+        int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
+        if(tmp>u){ //max
           actionX = i;
           actionY = j;
           u = tmp;
+          /*
+          int ev = eval(plateau->getGameMatrix(), player);
+          cout << "Turn min, eval = " << ev << endl;
+          for(int i=0; i<5; i++){
+            for(int j=0; j<5 ;j++){
+              cout << plateau->getGameMatrix()[i][j] << " ";
+            }
+            cout << endl;
+          }
+          cout << endl;*/
           //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
@@ -66,6 +87,17 @@ int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
 }
 
 int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+  /*int ev = eval(plateau->getGameMatrix(), player);
+  cout << "Turn min, eval = " << ev << endl;
+  for(int i=0; i<5; i++){
+    for(int j=0; j<5 ;j++){
+      cout << plateau->getGameMatrix()[i][j] << " ";
+    }
+    cout << endl;
+  }
+  cout << endl;*/
+
+
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
     //cout << "NB pawns = " << plateau->nbPawns() << endl;
@@ -86,10 +118,21 @@ int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
-        if(int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1)<u){ //max
+        int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
+        if(tmp<u){ //max
           actionX = i;
           actionY = j;
           u = tmp;
+          /*
+          int ev = eval(plateau->getGameMatrix(), player);
+          cout << "Turn max, eval = " << ev << endl;
+          for(int i=0; i<5; i++){
+            for(int j=0; j<5 ;j++){
+              cout << plateau->getGameMatrix()[i][j] << " ";
+            }
+            cout << endl;
+          }
+          cout << endl;*/
           //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
         plateau->addNewPawn(i,j,0);

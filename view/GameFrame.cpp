@@ -251,8 +251,8 @@ void GameFrame::draw(vector<vector<int>> matrix) {
   drawButton("player2_" + std::to_string(player2State));
 
 
-  for(int x=0; (unsigned)x<matrix.size(); x++) {
-    for(int y=0; (unsigned)y<matrix.size(); y++) {
+  for(unsigned int x=0; x<matrix.size(); x++) {
+    for(unsigned int y=0; y<matrix.size(); y++) {
       if(matrix[x][y]==1 || matrix[x][y]==2) {
         sf::Sprite pawn;
         sf::Texture pawnTexture;
