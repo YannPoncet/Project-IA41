@@ -1,24 +1,47 @@
 #include "MinMax.hpp"
 
-vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int turn){
+vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int turn, int phase){
 
-  int x = -1;
-  int y = -1;
-
+  vector<int> move;
   int alpha = std::numeric_limits<int>::min();
   int beta = std::numeric_limits<int>::max();
 
-  turnMax(plateau, profondeur, alpha, beta, x, y, player, turn);
+  switch(phase){
+    case 2:{
+      int x = -1;
+      int y = -1;
 
-  cout << "minMax move : " <<  x << " " <<  y << endl;
+      turnMaxPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
 
-  vector<int> move;
-  move.push_back(x); //x
-  move.push_back(y); //y
+      cout << "minMax move phase2 : " <<  x << " " <<  y << endl;
+
+      move.push_back(x); //x
+      move.push_back(y); //y
+    }
+        break;
+
+    case 3:{
+      int startX = -1;
+      int startY = -1;
+      int endX = -1;
+      int endY = -1;
+
+      turnMaxPhase3(plateau, profondeur, alpha, beta, startX, startY, endX, endY, player, turn);
+
+      cout << "minMax move phase 3 : " <<  startX << " " <<  startY << " " << endX << " " << endY << endl;
+
+      move.push_back(startX);
+      move.push_back(startY);
+      move.push_back(endX);
+      move.push_back(endY);
+    }
+        break;
+  }
+
   return move;
 }
 
-int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
   /*int ev = eval(plateau->getGameMatrix(), player);
   cout << "Turn max, eval = " << ev << endl;
   for(int i=0; i<5; i++){
@@ -36,7 +59,7 @@ int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
 
   if(plateau->nbPawns()==8){
     //TODO phase 3
-    return turnMax(plateau, p-1, alpha, beta, x, y, player, turn);
+    return turnMaxPhase2(plateau, p-1, alpha, beta, x, y, player, turn);
   }
 
   int u = std::numeric_limits<int>::min();
@@ -48,7 +71,7 @@ int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
 
-        int tmp = turnMin(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
+        int tmp = turnMinPhase2(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
         if(tmp>u){ //max
           actionX = i;
           actionY = j;
@@ -86,7 +109,7 @@ int MinMax::turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
   return u;
 }
 
-int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
   /*int ev = eval(plateau->getGameMatrix(), player);
   cout << "Turn min, eval = " << ev << endl;
   for(int i=0; i<5; i++){
@@ -107,7 +130,7 @@ int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
 
   if(plateau->nbPawns()==8){
     //TODO phase 3
-    return turnMin(plateau, p-1, alpha, beta, x, y, player, turn);
+    return turnMinPhase2(plateau, p-1, alpha, beta, x, y, player, turn);
   }
 
   int u = std::numeric_limits<int>::max();
@@ -118,8 +141,8 @@ int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
-        int tmp = turnMax(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
-        if(tmp<u){ //max
+        int tmp = turnMaxPhase2(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
+        if(tmp<u){ //min
           actionX = i;
           actionY = j;
           u = tmp;
@@ -155,6 +178,126 @@ int MinMax::turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int 
   //cout << "end min move : " <<  *x << " " <<  *y << endl;
   return u;
 }
+
+int MinMax::turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
+
+  if(plateau->hasSomeoneWon() || p==0){
+    int tmp=eval(plateau->getGameMatrix(), player);
+    return tmp;
+  }
+
+  int u = std::numeric_limits<int>::min();
+  int startActionX = -1;
+  int startActionY = -1;
+  int endActionX = -1;
+  int endActionY = -1;
+
+  for(int i=0; i<5; i++){
+    for(int j=0; j<5 ;j++){
+      if(plateau->getGameMatrix()[i][j]==turn){ //the current player's pawn
+        plateau->addNewPawn(i,j,0); //deleting the pawn on this position
+
+        //TODO ici le pion est supprimé car on test le mouvement d'un pion (#phase3)
+        //seulement si le pion est supprimé de la matrice de jeu,
+        //lors du turnMinPhase3, on refait une boucle sur i,j et sur k,l et cet emplacement est vide
+        //donc plateau->getGameMatrix()[k][l]==0 peut retourner vrai sur lemplacement du pion
+        //qu'on vient de supprimer et l'algo peut donc dire que le meilleur mouvement c'est
+        //de mettre le pion à cet endroit --> trouver une solution nous devons
+
+        for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
+          for(int l=j-1; l<j+2; l++){
+            if(k>=0 && k<5 && l>=0 && l<5 && k!=i && l!=j && (plateau->getGameMatrix()[k][l]==0)){ //on the board && empty
+              plateau->addNewPawn(k,l,turn); //adding the pawn on this position
+              int tmp = turnMinPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
+              if(tmp>u){ //max
+                startActionX = i;
+                startActionY = j;
+                endActionX = k;
+                endActionY = l;
+                u = tmp;
+              }
+
+              if(u>beta){ //cut branches
+                startX = startActionX;
+                startY = startActionY;
+                endX = endActionX;
+                endY = endActionY;
+                return u;
+              }
+
+              if(alpha<u)
+                alpha=u;
+
+              plateau->addNewPawn(k,l,0); // deleting the pawn for the next steps
+            }
+          }
+        }
+        plateau->addNewPawn(i,j,turn); // replacing the pawn for the next steps
+      }
+    }
+  }
+
+  startX = startActionX;
+  startY = startActionY;
+  endX = endActionX;
+  endY = endActionY;
+  //cout << "end max move : " <<  *x << " " <<  *y << endl;
+  return u;
+}
+
+int MinMax::turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
+
+    if(plateau->hasSomeoneWon() || p==0){
+      int tmp=eval(plateau->getGameMatrix(), player);
+      return tmp;
+    }
+
+    int u = std::numeric_limits<int>::max();
+    int startActionX = -1;
+    int startActionY = -1;
+    int endActionX = -1;
+    int endActionY = -1;
+
+    for(int i=0; i<5; i++){
+      for(int j=0; j<5 ;j++){
+        if(plateau->getGameMatrix()[i][j]==turn){ //the current player's pawn
+          plateau->addNewPawn(i,j,0); //deleting the pawn on this position
+
+          for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
+            for(int l=j-1; l<j+2; l++){
+              if(k>=0 && k<5 && l>=0 && l<5 && k!=i && l!=j && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
+                plateau->addNewPawn(k,l,turn); //adding the pawn on this position
+                int tmp = turnMinPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
+                if(tmp<u){ //min
+                  startActionX = i;
+                  startActionY = j;
+                  endActionX = k;
+                  endActionY = l;
+                  u = tmp;
+                }
+
+                if(u<alpha){ //cut branches
+                  startX = startActionX;
+                  startY = startActionY;
+                  endX = endActionX;
+                  endY = endActionY;
+                  return u;
+                }
+
+                if(beta>u)
+                  alpha=u;
+
+                plateau->addNewPawn(k,l,0); // deleting the pawn for the next steps
+              }
+            }
+          }
+          plateau->addNewPawn(i,j,turn); // replacing the pawn for the next steps
+        }
+      }
+    }
+  }
+
+
 
 
 int MinMax::eval(vector<vector<int>> gameMatrix, int player) {

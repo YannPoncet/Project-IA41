@@ -18,13 +18,17 @@ class MinMax {
     //static vector<int> phase2(Plateau* plateau, int player, int turn);
 
     //launches the minMax algorithm and returns the move to do
-    vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn);
+    vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn, int phase);
 
   private:
     //the max part of the algorithm
-    int turnMax(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
+    int turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
     //the min part of the algorithm
-    int turnMin(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
+    int turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
+
+    int turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
+
+    int turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
 
     //returns the evalutation of a state of the game
     int eval(vector<vector<int>> gameMatrix, int player);

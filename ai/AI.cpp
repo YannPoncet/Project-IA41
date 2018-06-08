@@ -6,16 +6,20 @@ vector<int> AI::getDecision(int phase, int turn, int difficulty, Plateau* platea
 
   cout << "je suis l'aiiiiiiiiii, je fais n'importe quoi maid je fais quelque chose putain" << endl;
 
-  if(phase == 2) { //returns a vector of length 2 to know where to put the pawn
+  Plateau* newPlateau = new Plateau(5, plateau->getGameMatrix());
+  MinMax* minMax;
+  v = minMax->minMax(newPlateau, 2, turn, turn, phase); //2 of depth
+
+  /*if(phase == 2) { //returns a vector of length 2 to know where to put the pawn
 
 
     Plateau* newPlateau = new Plateau(5, plateau->getGameMatrix());
     MinMax* minMax;
-    v = minMax->minMax(newPlateau, 2, turn, turn); //3 of depth
+    v = minMax->minMax(newPlateau, 2, turn, turn); //2 of depth
 
     //cout << "v.x : " << v[0] << "  v.y : " << v[1] << endl;
 
-    /* TO REPLACE BELOW
+     TO REPLACE BELOW
     int x;
     int y;
     do {
@@ -25,10 +29,10 @@ vector<int> AI::getDecision(int phase, int turn, int difficulty, Plateau* platea
 
     v.push_back(x);
     v.push_back(y);
-     END OF TO REPLACE BELOW */
+     END OF TO REPLACE BELOW
 
   } else if(phase == 3) {
-    /* TO REPLACE BELOW */
+      TO REPLACE BELOW
     int x1;
     int y1;
     do {
@@ -48,8 +52,8 @@ vector<int> AI::getDecision(int phase, int turn, int difficulty, Plateau* platea
 
     v.push_back(x2);
     v.push_back(y2);
-    /* END OF TO REPLACE */
-  }
+    END OF TO REPLACE
+  }*/
 
   return v;
 }
