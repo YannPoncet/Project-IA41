@@ -59,7 +59,9 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
 
   if(plateau->nbPawns()==8){
     //TODO phase 3
-    return turnMaxPhase2(plateau, p-1, alpha, beta, x, y, player, turn);
+    int endX;
+    int endY;
+    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
   }
 
   int u = std::numeric_limits<int>::min();
@@ -130,7 +132,9 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
 
   if(plateau->nbPawns()==8){
     //TODO phase 3
-    return turnMinPhase2(plateau, p-1, alpha, beta, x, y, player, turn);
+    int endX;
+    int endY;
+    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
   }
 
   int u = std::numeric_limits<int>::max();
@@ -203,6 +207,7 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &s
         //donc plateau->getGameMatrix()[k][l]==0 peut retourner vrai sur lemplacement du pion
         //qu'on vient de supprimer et l'algo peut donc dire que le meilleur mouvement c'est
         //de mettre le pion à cet endroit --> trouver une solution nous devons
+        //en fait c'est ptet bon .-. ché pas :'(
 
         for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
           for(int l=j-1; l<j+2; l++){
