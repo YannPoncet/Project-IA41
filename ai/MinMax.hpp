@@ -19,7 +19,8 @@ class MinMax {
 
     //launches the minMax algorithm and returns the move to do
     vector<int> minMax(Plateau* plateau, int profondeur, int player, int turn, int phase);
-
+    //returns the evalutation of a state of the game
+    int eval(vector<vector<int>> gameMatrix, int player);
   private:
     //the max part of the algorithm
     int turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
@@ -30,8 +31,7 @@ class MinMax {
 
     int turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
 
-    //returns the evalutation of a state of the game
-    int eval(vector<vector<int>> gameMatrix, int player);
+
     //used in eval to locate a pattern
     int findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
     //test the associoted pattern at the x y coordinates

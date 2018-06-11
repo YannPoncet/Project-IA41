@@ -2,8 +2,6 @@
 
 vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int turn, int phase){
 
-  cout << "maxphase2 player : " << player << " turn : " << turn << endl;
-
   vector<int> move;
   int alpha = std::numeric_limits<int>::min();
   int beta = std::numeric_limits<int>::max();
@@ -44,6 +42,9 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
 }
 
 int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
+
+  //cout << "maxphase2 player : " << player << " turn : " << turn << endl;
+
   /*int ev = eval(plateau->getGameMatrix(), player);
   cout << "Turn max, eval = " << ev << endl;
   for(int i=0; i<5; i++){
@@ -115,7 +116,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
 
 int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn){
 
-  cout << "minphase2 player : " << player << " turn : " << turn << endl;
+  //cout << "minphase2 player : " << player << " turn : " << turn << endl;
 
   /*int ev = eval(plateau->getGameMatrix(), player);
   cout << "Turn min, eval = " << ev << endl;
@@ -190,7 +191,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
 
 int MinMax::turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
 
-  cout << "maxphase3 player : " << player << " turn : " << turn << endl;
+  //cout << "maxphase3 player : " << player << " turn : " << turn << endl;
 
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
@@ -253,7 +254,7 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &s
 
 int MinMax::turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
 
-  cout << "minphase3 player : " << player << " turn : " << turn << endl;
+  //cout << "minphase3 player : " << player << " turn : " << turn << endl;
 
     if(plateau->hasSomeoneWon() || p==0){
       int tmp=eval(plateau->getGameMatrix(), player);
@@ -335,14 +336,22 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
     }
   }
 
-  if(player == 1 && score1>=100) {
-    score = score1;
-  } else if(player == 1) {
-    score = score1 - score2;
-  } else if(player == 2 && score2>=100) {
-    score = score2;
-  } else if(player == 2) {
-    score = score2 - score1;
+  if(player == 1) {
+    if(score1>=100) {
+      score = score1;
+    } else if(score2>=100) {
+      score = -score2;
+    } else {
+      score = score1 - score2;
+    }
+  } else { //if(player == 2)
+    if(score2>=100) {
+      score = score2;
+    } else if(score1>=100) {
+      score = -score1;
+    } else {
+      score = score2 - score1;
+    }
   }
 //printf("Score player1 :%d\n",score);
   return score;

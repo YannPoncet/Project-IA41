@@ -39,7 +39,6 @@ void Game::loop() {
           int y = coords[1];
           if(plateau->isFreeAt(x,y)) {
             plateau->addNewPawn(x,y,turn);
-            //MinMax::eval(plateau->getGameMatrix(), 1);
             switchTurn();
           }
           if(plateau->hasSomeoneWon()) {
@@ -129,7 +128,10 @@ void Game::switchTurn() {
     turn = 1;
   } else if(turn  == 1) {
     turn = 2;
-  }/*
+  }
+  MinMax minMax;
+  cout << "eval : " << minMax.eval(plateau->getGameMatrix(), 2) << endl;
+  /*
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
       cout << plateau->getGameMatrix()[i][j] << " ";
