@@ -11,7 +11,7 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
       int x = -1;
       int y = -1;
 
-      turnMinPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
+      turnMaxPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
 
       cout << "minMax move phase2 : " <<  x << " " <<  y << endl;
 
@@ -100,7 +100,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u>beta){ //cut branches
+        if(u>=beta){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
@@ -181,7 +181,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u<alpha){ //cut branches
+        if(u<=alpha){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
