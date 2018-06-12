@@ -95,7 +95,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u>beta){ //cut branches
+        if(u>=beta){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
@@ -170,7 +170,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u<alpha){ //cut branches
+        if(u<=alpha){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
@@ -222,7 +222,7 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &s
                 u = tmp;
               }
 
-              if(u>beta){ //cut branches
+              if(u>=beta){ //cut branches
                 startX = startActionX;
                 startY = startActionY;
                 endX = endActionX;
@@ -285,7 +285,7 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &s
                   u = tmp;
                 }
 
-                if(u<alpha){ //cut branches
+                if(u<=alpha){ //cut branches
                   startX = startActionX;
                   startY = startActionY;
                   endX = endActionX;
