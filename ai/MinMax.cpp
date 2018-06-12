@@ -11,7 +11,7 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
       int x = -1;
       int y = -1;
 
-      turnMaxPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
+      turnMinPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
 
       cout << "minMax move phase2 : " <<  x << " " <<  y << endl;
 
@@ -61,10 +61,15 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
   }
 
   if(plateau->nbPawns()==8){
-    //TODO phase 3
+    //TODELETE
+    int tmp=eval(plateau->getGameMatrix(), player);
+    return tmp;
+    /*
+
+
     int endX;
     int endY;
-    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);*/
   }
 
   int u = std::numeric_limits<int>::min();
@@ -81,16 +86,16 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
           actionX = i;
           actionY = j;
           u = tmp;
-          /*
+
           int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn min, eval = " << ev << endl;
+          cout << "Turn min, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
           for(int i=0; i<5; i++){
             for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
+              cout << plateau->getGameMatrix()[j][i] << " ";
             }
             cout << endl;
           }
-          cout << endl;*/
+          cout << endl;
           //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
@@ -137,10 +142,16 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
   }
 
   if(plateau->nbPawns()==8){
-    //TODO phase 3
+    //TODELETE
+    int tmp=eval(plateau->getGameMatrix(), player);
+    //cout << "NB pawns = " << plateau->nbPawns() << endl;
+    //cout << "MIN eval = " << tmp << endl;
+    return tmp;
+
+    /*
     int endX;
     int endY;
-    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);*/
   }
 
   int u = std::numeric_limits<int>::max();
@@ -156,16 +167,16 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
           actionX = i;
           actionY = j;
           u = tmp;
-          /*
+
           int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn max, eval = " << ev << endl;
+          cout << "Turn max, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
           for(int i=0; i<5; i++){
             for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
+              cout << plateau->getGameMatrix()[j][i] << " ";
             }
             cout << endl;
           }
-          cout << endl;*/
+          cout << endl;
           //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
         plateau->addNewPawn(i,j,0);
