@@ -219,6 +219,17 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
               plateau->addNewPawn(k,l,turn); //adding the pawn on this position
               int tmp = turnMinPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
               if(tmp>u){ //max
+
+                int ev = eval(plateau->getGameMatrix(), player);
+                cout << "Turn max, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
+                for(int i=0; i<5; i++){
+                  for(int j=0; j<5 ;j++){
+                    cout << plateau->getGameMatrix()[j][i] << " ";
+                  }
+                  cout << endl;
+                }
+                cout << endl;
+
                 startActionX = i;
                 startActionY = j;
                 endActionX = k;
@@ -282,6 +293,17 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
                 plateau->addNewPawn(k,l,turn); //adding the pawn on this position
                 int tmp = turnMaxPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
                 if(tmp<u){ //min
+
+                  int ev = eval(plateau->getGameMatrix(), player);
+                  cout << "Turn max, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
+                  for(int i=0; i<5; i++){
+                    for(int j=0; j<5 ;j++){
+                      cout << plateau->getGameMatrix()[j][i] << " ";
+                    }
+                    cout << endl;
+                  }
+                  cout << endl;
+                  
                   startActionX = i;
                   startActionY = j;
                   endActionX = k;
