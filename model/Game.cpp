@@ -54,7 +54,8 @@ void Game::loop() {
       } else { //the IA shall play
         vector<int> decision;
 
-        int x,y;
+        // Random for the first pawn
+        /*int x,y;
         if(first_pawn==0){   //Set to 0 only for the first move of the AI to generate the first random point
             do{
              x=rand()%5;
@@ -66,9 +67,8 @@ void Game::loop() {
            decision.push_back(y);
            first_pawn=1;
         }
-        else{
-        decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
-      }
+        else */decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
+
 
         //we add the pawn where the AI decided
         plateau->addNewPawn(decision[0],decision[1],turn);
