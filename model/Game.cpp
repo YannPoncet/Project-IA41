@@ -4,18 +4,22 @@
 Game::Game() {
   this->turn = 1;
   this->phase = 1;
+  this->first_pawn=0;
   this->plateau = new Plateau(5);
   this->gameFrame = new GameFrame();
 }
 
 void Game::start() {
   loop();
+
 }
 
 void Game::loop() {
   int x1=-1,y1;
+
   while(gameFrame->isOpen())
   {
+
     if(phase == 1) { //Phase Menu
       int gameChangement = gameFrame->phase1(plateau->getGameMatrix());
       switch(gameChangement){
@@ -49,7 +53,22 @@ void Game::loop() {
         }
       } else { //the IA shall play
         vector<int> decision;
+
+        int x,y;
+        if(first_pawn==0){   //Set to 0 only for the first move of the AI to generate the first random point
+            do{
+             x=rand()%5;
+             y=rand()%5;
+             cout << "x:"<<x<<" y:"<<y<<endl;
+           }while(plateau->getValue(x,y)!=0);
+           cout<<"hello";
+           decision.push_back(x);
+           decision.push_back(y);
+           first_pawn=1;
+        }
+        else{
         decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
+      }
 
         //we add the pawn where the AI decided
         plateau->addNewPawn(decision[0],decision[1],turn);
@@ -95,7 +114,9 @@ void Game::loop() {
          }
        } else { //the IA shall play
          vector<int> decision;
+
          decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
+
 
          //we add the pawn where the AI decided
          plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);
@@ -153,6 +174,7 @@ void Game::resetGame() {
   plateau->reset();
   phase = 1;
   turn = 1;
+  first_pawn=0;
 }
 
 bool Game::isPlayerPlaying() {
