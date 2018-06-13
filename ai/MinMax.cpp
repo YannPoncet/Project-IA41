@@ -358,7 +358,7 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
 }
 
 int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player) {
-  int nbPattern4 = 4;
+  int nbPattern4 = 6;
   int pattern4[nbPattern4][4][2]  = {
   //{{score,0}},  {X1,Y1},{X2,Y2},{X3,Y3}}}
     {{100,0}, {1,1},{2,2},{3,3}}, //diag
@@ -369,13 +369,14 @@ int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player
     {{50,0}, {1,0},{2,1},{3,2}}, //L1
     {{50,0}, {0,1},{2,3},{3,4}}}; //L2
 
-  int nbPattern3 = 4;
+  int nbPattern3 = 5;
   int pattern3[nbPattern3][3][2] = {
     {{10,0},  {1,0},{1,1}}, //square1
     {{10,0},  {0,1},{1,1}}, //square2
     {{10,0},  {1,0},{2,0}}, //line
     {{10,0},  {0,1},{0,2}}, //collumn
     {{10,0},  {1,1},{2,2}}}; //diag
+    
   int nbPattern2 = 3;
   int pattern2[nbPattern2][2][2] = {
     {{1,0}, {1,1}}, //diag
