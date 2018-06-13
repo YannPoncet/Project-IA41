@@ -215,7 +215,7 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
 
         for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
           for(int l=j-1; l<j+2; l++){
-            if(k>=0 && k<5 && l>=0 && l<5 && k!=i && l!=j && (plateau->getGameMatrix()[k][l]==0)){ //on the board && empty
+            if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && empty
               plateau->addNewPawn(k,l,turn); //adding the pawn on this position
               int tmp = turnMinPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
               if(tmp>u){ //max
@@ -278,7 +278,7 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
 
           for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
             for(int l=j-1; l<j+2; l++){
-              if(k>=0 && k<5 && l>=0 && l<5 && k!=i && l!=j && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
+              if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
                 plateau->addNewPawn(k,l,turn); //adding the pawn on this position
                 int tmp = turnMaxPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
                 if(tmp<u){ //min
@@ -310,6 +310,13 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
         }
       }
     }
+
+    startX = startActionX;
+    startY = startActionY;
+    endX = endActionX;
+    endY = endActionY;
+    //cout << "end max move : " <<  *x << " " <<  *y << endl;
+    return u;
   }
 
 
