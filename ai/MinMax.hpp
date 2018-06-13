@@ -23,13 +23,13 @@ class MinMax {
     int eval(vector<vector<int>> gameMatrix, int player);
   private:
     //the max part of the algorithm
-    int turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
+    int turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, int &y, int player, int turn);
     //the min part of the algorithm
-    int turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x, int &y, int player, int turn);
+    int turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, int &y, int player, int turn);
 
-    int turnMaxPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
+    int turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
 
-    int turnMinPhase3(Plateau* plateau, int p, int &alpha, int &beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
+    int turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &startX, int &startY, int &endX, int &endY, int player, int turn);
 
 
     //used in eval to locate a pattern
