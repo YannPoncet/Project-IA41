@@ -78,7 +78,7 @@ int Plateau::testPattern(int x, int y, int currentVal) {
   //Stores the different configurations to win
   int pattern[5][3][2] = {
     {{1,1},{2,2},{3,3}}, //diag1
-    {{-1,-1},{-2,-2},{-3,-3}}, //diag2
+    {{1,-1},{2,-2},{3,-3}}, //diag2
     {{1,0},{0,1},{1,1}}, //square
     {{1,0},{2,0},{3,0}}, //horizontal
     {{0,1},{0,2},{0,3}} //vertical

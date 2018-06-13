@@ -86,7 +86,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
           actionX = i;
           actionY = j;
           u = tmp;
-
+/*
           int ev = eval(plateau->getGameMatrix(), player);
           cout << "Turn min, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
           for(int i=0; i<5; i++){
@@ -95,17 +95,17 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
             }
             cout << endl;
           }
-          cout << endl;
+          cout << endl; */
           //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
-
+/*
         if(u>=beta){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
           return u;
-        }
+        }*/
 
         if(alpha<u)
           alpha=u;
@@ -167,7 +167,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
           actionX = i;
           actionY = j;
           u = tmp;
-
+/*
           int ev = eval(plateau->getGameMatrix(), player);
           cout << "Turn max, eval = " << ev << ", tmp = " << tmp << ", depth = " << p << endl;
           for(int i=0; i<5; i++){
@@ -176,20 +176,21 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int &alpha, int &beta, int &x
             }
             cout << endl;
           }
-          cout << endl;
+          cout << endl;*/
           //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
         plateau->addNewPawn(i,j,0);
-
+/*
         if(u<=alpha){ //cut branches
           x = actionX;
           y = actionY;
           //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
           return u;
-        }
+        }*/
 
-        if(beta>u)
+        if(beta>u) {
           beta=u;
+        }
       }
     }
   }
@@ -369,7 +370,7 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
 }
 
 int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player) {
-  int nbPattern4 = 4;
+  int nbPattern4 = 6;
   int pattern4[nbPattern4][4][2]  = {
   //{{score,0}},  {X1,Y1},{X2,Y2},{X3,Y3}}}
     {{100,0}, {1,1},{2,2},{3,3}}, //diag
@@ -377,10 +378,11 @@ int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player
     {{100,0}, {0,1},{0,2},{0,3}}, //collumn
     {{100,0}, {1,0},{2,0},{3,0}}, //line
 
+
     {{50,0}, {1,0},{2,1},{3,2}}, //L1
     {{50,0}, {0,1},{2,3},{3,4}}}; //L2
 
-  int nbPattern3 = 4;
+  int nbPattern3 = 5;
   int pattern3[nbPattern3][3][2] = {
     {{10,0},  {1,0},{1,1}}, //square1
     {{10,0},  {0,1},{1,1}}, //square2
