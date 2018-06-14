@@ -66,7 +66,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
     return tmp;*/
     int endX;
     int endY;
-    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
   }
 
   int u = std::numeric_limits<int>::min();
@@ -144,7 +144,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
     return tmp;*/
     int endX;
     int endY;
-    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
   }
 
   int u = std::numeric_limits<int>::max();
@@ -260,64 +260,64 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
 
   //cout << "minphase3 player : " << player << " turn : " << turn << endl;
 
-    if(plateau->hasSomeoneWon() || p==0){
-      int tmp=eval(plateau->getGameMatrix(), player);
-      return tmp;
-    }
+  if(plateau->hasSomeoneWon() || p==0){
+    int tmp=eval(plateau->getGameMatrix(), player);
+    return tmp;
+  }
 
-    int u = std::numeric_limits<int>::max();
-    int startActionX = -1;
-    int startActionY = -1;
-    int endActionX = -1;
-    int endActionY = -1;
+  int u = std::numeric_limits<int>::max();
+  int startActionX = -1;
+  int startActionY = -1;
+  int endActionX = -1;
+  int endActionY = -1;
 
-    for(int i=0; i<5; i++){
-      for(int j=0; j<5 ;j++){
-        if(plateau->getGameMatrix()[i][j]==turn){ //the current player's pawn
-          plateau->addNewPawn(i,j,0); //deleting the pawn on this position
+  for(int i=0; i<5; i++){
+    for(int j=0; j<5 ;j++){
+      if(plateau->getGameMatrix()[i][j]==turn){ //the current player's pawn
+        plateau->addNewPawn(i,j,0); //deleting the pawn on this position
 
-          for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
-            for(int l=j-1; l<j+2; l++){
-              if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
-                plateau->addNewPawn(k,l,turn); //adding the pawn on this position
-                int tmp = turnMaxPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
-                if(tmp<u){ //min
-                  startActionX = i;
-                  startActionY = j;
-                  endActionX = k;
-                  endActionY = l;
-                  u = tmp;
-                }
-
-                if(u<=alpha){ //cut branches
-                  startX = startActionX;
-                  startY = startActionY;
-                  endX = endActionX;
-                  endY = endActionY;
-                  plateau->addNewPawn(k,l,0);
-                  plateau->addNewPawn(i,j,turn);
-                  return u;
-                }
-
-                if(beta>u)
-                  alpha=u;
-
-                plateau->addNewPawn(k,l,0); // deleting the pawn for the next steps
+        for(int k=i-1; k<i+2; k++){ //checking the positions around the founded pawn
+          for(int l=j-1; l<j+2; l++){
+            if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
+              plateau->addNewPawn(k,l,turn); //adding the pawn on this position
+              int tmp = turnMaxPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
+              if(tmp<u){ //min
+                startActionX = i;
+                startActionY = j;
+                endActionX = k;
+                endActionY = l;
+                u = tmp;
               }
+
+              if(u<=alpha){ //cut branches
+                startX = startActionX;
+                startY = startActionY;
+                endX = endActionX;
+                endY = endActionY;
+                plateau->addNewPawn(k,l,0);
+                plateau->addNewPawn(i,j,turn);
+                return u;
+              }
+
+              if(beta>u)
+                beta=u;
+
+              plateau->addNewPawn(k,l,0); // deleting the pawn for the next steps
             }
           }
-          plateau->addNewPawn(i,j,turn); // replacing the pawn for the next steps
         }
+        plateau->addNewPawn(i,j,turn); // replacing the pawn for the next steps
       }
     }
-
-    startX = startActionX;
-    startY = startActionY;
-    endX = endActionX;
-    endY = endActionY;
-    //cout << "end max move : " <<  *x << " " <<  *y << endl;
-    return u;
   }
+
+  startX = startActionX;
+  startY = startActionY;
+  endX = endActionX;
+  endY = endActionY;
+  //cout << "end max move : " <<  *x << " " <<  *y << endl;
+  return u;
+}
 
 
 
