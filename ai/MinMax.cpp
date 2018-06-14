@@ -66,7 +66,7 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
     return tmp;*/
     int endX;
     int endY;
-    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
   }
 
   int u = std::numeric_limits<int>::min();
@@ -144,7 +144,7 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
     return tmp;*/
     int endX;
     int endY;
-    return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
+    return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, (turn%2)+1);
   }
 
   int u = std::numeric_limits<int>::max();
