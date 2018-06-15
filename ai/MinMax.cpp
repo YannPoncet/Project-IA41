@@ -334,13 +334,13 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
       int currentVal = gameMatrix[x][y];
       if(currentVal == 1) {
         tmp1 = findPattern(gameMatrix, x, y, 1);
-        if (tmp1 > score1) {
+        if (tmp1 > score1) { //the max value for score1
           score1 = tmp1;
         }
       }
       if(currentVal == 2) {
         tmp2 = findPattern(gameMatrix, x, y, 2);
-        if (tmp2 > score2) {
+        if (tmp2 > score2) { // max value for score2
           score2 = tmp2;
         }
       }
@@ -370,17 +370,12 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
 
 int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player) {
   int nbPattern4 = 4;
-  //int nbPattern4 = 6;
   int pattern4[nbPattern4][4][2]  = {
-  //{{score,0}},  {X1,Y1},{X2,Y2},{X3,Y3}}}
     {{100,0}, {1,1},{2,2},{3,3}}, //diag
     {{100,0}, {1,0},{0,1},{1,1}}, //square
     {{100,0}, {0,1},{0,2},{0,3}}, //collumn
-    {{100,0}, {1,0},{2,0},{3,0}}, //line
+    {{100,0}, {1,0},{2,0},{3,0}}}; //line
 
-    //{{50,0}, {1,0},{2,1},{3,2}}, //L1
-    //{{50,0}, {0,1},{2,3},{3,4}}}; //L2
-  };
 
   int nbPattern3 = 5;
   int pattern3[nbPattern3][3][2] = {
@@ -396,29 +391,37 @@ int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player
     {{1,0}, {0,1}}, //collumn
     {{1,0}, {1,0}}}; //line
 
+int tmp;
 for( int pat=0; pat<nbPattern4; pat++) {
-  if (testAPattern(gameMatrix, 4, pattern4[pat], x, y, player)) {
-    return pattern4[pat][0][0];
+  if ((tmp = testAPattern(gameMatrix, 4, pattern4[pat], x, y, player)) >= 0) {
+    return pattern4[pat][0][0] + tmp;
   }
 }
 for( int pat=0; pat<nbPattern3; pat++) {
-  if (testAPattern(gameMatrix, 3, pattern3[pat], x, y, player)) {
-    return pattern3[pat][0][0];
+  if ((tmp = testAPattern(gameMatrix, 3, pattern3[pat], x, y, player)) >= 0) {
+    return pattern3[pat][0][0] + tmp;
   }
 }
   for( int pat=0; pat<nbPattern2; pat++) {
-    if (testAPattern(gameMatrix, 2, pattern2[pat], x, y, player)) {
-      return pattern2[pat][0][0];
+    if ((tmp = testAPattern(gameMatrix, 2, pattern2[pat], x, y, player)) >= 0) {
+      return pattern2[pat][0][0] + tmp;
     }
   }
 return 0;
 }
 
 
-bool MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player)
+int MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player)
 {
   bool testBool = true;
   int coord = 1;
+  int center = 0;
+
+  if (x == 2 && y == 2){
+    center += 2;
+  } else if (x > 0 && x < 4 && y > 0 && y < 4){
+    center += 1;
+  }
   do {
     int testX = x+pattern[coord][0];
     int testY = y+pattern[coord][1];
@@ -428,15 +431,28 @@ bool MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int p
       if(gameMatrix[testX][testY] != player) {
         testBool = false;
       }
+      if (testX == 2 && testY == 2){
+        center += 2;
+      } else if (testX > 0 && testX < 4 && testY > 0 && testY < 4){
+        center += 1;
+      }
     coord++;
   }
-  } while(testBool == true && coord <patternRank);
+  } while(testBool && coord <patternRank);
 
-  if(testBool == true) {
-    return true;
+  if(testBool) {
+    return center;
   }
   testBool = true;
   coord = 1;
+  center = 0;
+
+  if (x == 2 && y == 2){
+    center += 2;
+  } else if (x > 0 && x < 4 && y > 0 && y < 4){
+    center += 1;
+  }
+
   do {
     int testX = x-pattern[coord][0];
     int testY = y+pattern[coord][1];
@@ -446,13 +462,18 @@ bool MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int p
       if(gameMatrix[testX][testY] != player) {
         testBool = false;
       }
+      if (testX == 2 && testY == 2){
+        center += 2;
+      } else if (testX > 0 && testX < 4 && testY > 0 && testY < 4){
+        center += 1;
+      }
     coord++;
   }
   } while(testBool == true && coord <patternRank);
 
   if(testBool == true) {
-    return true;
+    return center;
   }
 
-return false;
+return -1;
 }

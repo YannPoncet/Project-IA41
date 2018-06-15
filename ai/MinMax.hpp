@@ -35,7 +35,7 @@ class MinMax {
     //used in eval to locate a pattern
     int findPattern(vector<vector<int>> gameMatrix, int x, int y, int player);
     //test the associoted pattern at the x y coordinates
-    bool testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player);
+    int testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player);
 };
 
 #endif
