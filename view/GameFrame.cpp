@@ -37,16 +37,19 @@ int GameFrame::phase1(vector<vector<int>> matrix){
         int y = event.mouseButton.y;
 
         if(textureManager->isClicked("quit",x/widthFactor,y/heightFactor)) {
+          cout << "<-- Exiting" << endl;
           window.close();
         }
 
         if(textureManager->isClicked("player1_" + std::to_string(player1State),x/clickWidthFactor,y/clickHeightFactor)){
           gameChangement = 0;
+          cout << " --> Switch!" << endl;
           player1State = updatePlayerState(player1State);
         }
 
         if(textureManager->isClicked("player2_" + std::to_string(player2State),x/clickWidthFactor,y/clickHeightFactor)){
           gameChangement = 1;
+          cout << " --> Switch!" << endl;
           player2State = updatePlayerState(player2State);
         }
 

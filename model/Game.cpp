@@ -11,7 +11,6 @@ Game::Game() {
 
 void Game::start() {
   loop();
-
 }
 
 void Game::loop() {
@@ -23,7 +22,9 @@ void Game::loop() {
     if(phase == 1) { //Phase Menu
       int gameChangement = gameFrame->phase1(plateau->getGameMatrix());
       switch(gameChangement){
-        case 2: phase = 2; //Start
+        case 2: cout << " --> Game launched" << endl;
+                cout << "  --> Player " << turn << " is now playing" << endl;
+                phase = 2; //Start
           break;
       }
 
@@ -36,13 +37,16 @@ void Game::loop() {
           resetGame();
         }
         else if(coords.size() >= 2) { //If there has been a click on the "plateau"
+          cout << "   --> Click!" << endl;
           int x = coords[0];
           int y = coords[1];
           if(plateau->isFreeAt(x,y)) {
+            cout << "   <-- Pawn added at " << x << ":" << y << endl;
             plateau->addNewPawn(x,y,turn);
             switchTurn();
           }
           if(plateau->hasSomeoneWon()) {
+            cout << " <-- Someone has won" << endl;
             phase = 4;
           } else if(plateau->nbPawns() == 8) { //All the pawns are placed
             phase = 3;
@@ -69,6 +73,7 @@ void Game::loop() {
         plateau->addNewPawn(decision[0],decision[1],turn);
         switchTurn();
         if(plateau->hasSomeoneWon()) {
+          cout << " <-- Someone has won" << endl;
           phase = 4;
         } else if(plateau->nbPawns() == 8) { //All the pawns are placed
           phase = 3;
@@ -84,6 +89,7 @@ void Game::loop() {
           resetGame();
         }
         else if(coords.size() >= 2) { //If there has been a click on the "plateau"
+          cout << "   --> Click!" << endl;
            x1 = coords[0];
            y1 = coords[1];
            int x2,y2;
@@ -97,9 +103,11 @@ void Game::loop() {
                x2 = coords[0];
                y2 = coords[1];
                if (isItAt1From(x1,x2,y1,y2) && (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2))){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
+                  cout << "   <-- Pawn moved at " << x2 << ":" << y2 << endl;
                   plateau->moveFromTo(x1, y1, x2, y2);
                   switchTurn();
                   if(plateau->hasSomeoneWon()) {
+                    cout << " <-- Someone has won" << endl;
                     phase = 4;
                   }
                }
@@ -116,6 +124,7 @@ void Game::loop() {
          plateau->moveFromTo(decision[0], decision[1], decision[2], decision[3]);
          switchTurn();
          if(plateau->hasSomeoneWon()) {
+           cout << " <-- Someone has won" << endl;
            phase = 4;
          }
        }
@@ -144,6 +153,7 @@ void Game::switchTurn() {
   } else if(turn  == 1) {
     turn = 2;
   }
+  cout << "  --> Player " << turn << " is now playing" << endl;
 }
 
 bool Game::isItAt1From(int x1, int x2, int y1, int y2) {
@@ -154,6 +164,7 @@ bool Game::isItAt1From(int x1, int x2, int y1, int y2) {
 }
 
 void Game::resetGame() {
+  cout << "--> Reset" << endl;
   plateau->reset();
   phase = 1;
   turn = 1;
