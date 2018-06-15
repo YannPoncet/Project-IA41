@@ -321,7 +321,7 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
 
 
 
-
+//Estimate the score of a player by searching certain pawns' patterns
 int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
   int score1 = 0;
   int score2 = 0;
@@ -333,13 +333,13 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
     for(int y=0; y<5; y++) {
       int currentVal = gameMatrix[x][y];
       if(currentVal == 1) {
-        tmp1 = findPattern(gameMatrix, x, y, 1);
+        tmp1 = findPattern(gameMatrix, x, y, 1); // test every pattern for player2
         if (tmp1 > score1) { //the max value for score1
           score1 = tmp1;
         }
       }
       if(currentVal == 2) {
-        tmp2 = findPattern(gameMatrix, x, y, 2);
+        tmp2 = findPattern(gameMatrix, x, y, 2); // test every pattern for player2
         if (tmp2 > score2) { // max value for score2
           score2 = tmp2;
         }
@@ -348,58 +348,59 @@ int MinMax::eval(vector<vector<int>> gameMatrix, int player) {
   }
 
   if(player == 1) {
-    if(score1>=100) {
-      score = score1;
-    } else if(score2>=100) {
-      score = -score2;
+    if(score1>=1000) {
+      score = score1; //win of player1
+    } else if(score2>=1000) {
+      score = -score2; //win of player2
     } else {
       score = score1 - score2;
     }
   } else { //if(player == 2)
-    if(score2>=100) {
-      score = score2;
-    } else if(score1>=100) {
-      score = -score1;
+    if(score2>=1000) {
+      score = score2; //win of player1
+    } else if(score1>=1000) {
+      score = -score1; //win of player2
     } else {
       score = score2 - score1;
     }
   }
-//printf("Score player1 :%d\n",score);
   return score;
 }
 
+//define the patterns and call testAPattern for all of them
 int MinMax::findPattern(vector<vector<int>> gameMatrix, int x, int y, int player) {
   int nbPattern4 = 4;
   int pattern4[nbPattern4][4][2]  = {
-    {{100,0}, {1,1},{2,2},{3,3}}, //diag
-    {{100,0}, {1,0},{0,1},{1,1}}, //square
-    {{100,0}, {0,1},{0,2},{0,3}}, //collumn
-    {{100,0}, {1,0},{2,0},{3,0}}}; //line
+    {{1000,0}, {1,1},{2,2},{3,3}}, //diag
+    {{1000,0}, {1,0},{0,1},{1,1}}, //square
+    {{1000,0}, {0,1},{0,2},{0,3}}, //collumn
+    {{1000,0}, {1,0},{2,0},{3,0}}}; //line
 
 
   int nbPattern3 = 5;
   int pattern3[nbPattern3][3][2] = {
-    {{10,0},  {1,0},{1,1}}, //square1
-    {{10,0},  {0,1},{1,1}}, //square2
-    {{10,0},  {1,0},{2,0}}, //line
-    {{10,0},  {0,1},{0,2}}, //collumn
-    {{10,0},  {1,1},{2,2}}}; //diag
+    {{100,0},  {1,0},{1,1}}, //square1
+    {{100,0},  {0,1},{1,1}}, //square2
+    {{100,0},  {1,0},{2,0}}, //line
+    {{100,0},  {0,1},{0,2}}, //collumn
+    {{100,0},  {1,1},{2,2}}}; //diag
 
   int nbPattern2 = 3;
   int pattern2[nbPattern2][2][2] = {
-    {{1,0}, {1,1}}, //diag
-    {{1,0}, {0,1}}, //collumn
-    {{1,0}, {1,0}}}; //line
+    {{10,0}, {1,1}}, //diag
+    {{10,0}, {0,1}}, //collumn
+    {{10,0}, {1,0}}}; //line
 
+//calling testAPAttern for every pattern
 int tmp;
 for( int pat=0; pat<nbPattern4; pat++) {
   if ((tmp = testAPattern(gameMatrix, 4, pattern4[pat], x, y, player)) >= 0) {
-    return pattern4[pat][0][0] + tmp;
+    return pattern4[pat][0][0] + tmp; //stop if a pattern4 is found
   }
 }
 for( int pat=0; pat<nbPattern3; pat++) {
   if ((tmp = testAPattern(gameMatrix, 3, pattern3[pat], x, y, player)) >= 0) {
-    return pattern3[pat][0][0] + tmp;
+    return pattern3[pat][0][0] + tmp;//stop if a pattern3 is found
   }
 }
   for( int pat=0; pat<nbPattern2; pat++) {
@@ -410,14 +411,14 @@ for( int pat=0; pat<nbPattern3; pat++) {
 return 0;
 }
 
-
+//check if the given pattern is at the given coordinates and return bonus points
 int MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pattern[][2], int x, int y, int player)
 {
   bool testBool = true;
   int coord = 1;
   int center = 0;
 
-  if (x == 2 && y == 2){
+  if (x == 2 && y == 2){ //add bonus points if the first pawn is in the midlle of the board
     center += 2;
   } else if (x > 0 && x < 4 && y > 0 && y < 4){
     center += 1;
@@ -447,7 +448,7 @@ int MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pa
   coord = 1;
   center = 0;
 
-  if (x == 2 && y == 2){
+  if (x == 2 && y == 2){//bonus points for each pawn in the middle
     center += 2;
   } else if (x > 0 && x < 4 && y > 0 && y < 4){
     center += 1;
@@ -459,7 +460,7 @@ int MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pa
     if(testX<0 || testX>=5 || testY<0 || testY>=5) { //if we're outside of the gameMatrix
       testBool = false;
     } else {
-      if(gameMatrix[testX][testY] != player) {
+      if(gameMatrix[testX][testY] != player) { //check if ally pawn is on pattern's coordinates
         testBool = false;
       }
       if (testX == 2 && testY == 2){
@@ -472,8 +473,8 @@ int MinMax::testAPattern(vector<vector<int>> gameMatrix, int patternRank, int pa
   } while(testBool == true && coord <patternRank);
 
   if(testBool == true) {
-    return center;
+    return center; //return the amount of bonus points when pattern found
   }
 
-return -1;
+return -1; //pattern isn't at this coordinates
 }
