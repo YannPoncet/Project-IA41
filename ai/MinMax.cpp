@@ -72,6 +72,8 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
   int u = std::numeric_limits<int>::min();
   int actionX = -1;
   int actionY = -1;
+  int randomizeCount = 1;
+  bool isEqualChoosen = false;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
@@ -79,30 +81,40 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
         plateau->addNewPawn(i,j,turn);
 
         int tmp = turnMinPhase2(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
-        if(tmp>u){ //max
+        if(tmp>u) {
+          randomizeCount = 1;
+        } else if(tmp<=u) {
+          randomizeCount++;
+        }
+
+        int chances = rand()%randomizeCount;
+        if(tmp>=u && chances==0){
+        //if(tmp>u){ //max
           actionX = i;
           actionY = j;
+          if(tmp==u)
+            isEqualChoosen = true;
           u = tmp;
-          /*
-          int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn min, eval = " << ev << endl;
-          for(int i=0; i<5; i++){
-            for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
-            }
-            cout << endl;
-          }
-          cout << endl;*/
-          //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u>=beta){ //cut branches
-          x = actionX;
-          y = actionY;
-          //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
-          return u;
+        if(isEqualChoosen)
+        {
+          if(u>beta){ //cut branches
+            x = actionX;
+            y = actionY;
+            //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
+            return u;
+          }
+        } else {
+          if(u>=beta){ //cut branches
+            x = actionX;
+            y = actionY;
+            //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
+            return u;
+          }
         }
+
 
         if(alpha<u)
           alpha=u;
@@ -150,36 +162,47 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
   int u = std::numeric_limits<int>::max();
   int actionX = -1;
   int actionY = -1;
+  int randomizeCount = 1;
+  bool isEqualChoosen = false;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
       if(plateau->getGameMatrix()[i][j]==0){ //case vide
         plateau->addNewPawn(i,j,turn);
         int tmp = turnMaxPhase2(plateau, p-1, alpha, beta, x, y, player, (turn%2)+1);
-        if(tmp<u){ //min
+        if(tmp<u) {
+          randomizeCount = 1;
+        } else if(tmp<=u) {
+          randomizeCount++;
+        }
+
+        int chances = rand()%randomizeCount;
+        if(tmp<=u && chances==0){
+        //if(tmp>u){ //max
           actionX = i;
           actionY = j;
+          if(tmp==u)
+            isEqualChoosen = true;
           u = tmp;
-          /*
-          int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn max, eval = " << ev << endl;
-          for(int i=0; i<5; i++){
-            for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
-            }
-            cout << endl;
-          }
-          cout << endl;*/
-          //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
         plateau->addNewPawn(i,j,0);
 
-        if(u<=alpha){ //cut branches
-          x = actionX;
-          y = actionY;
-          //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
-          return u;
+        if(isEqualChoosen){
+          if(u<alpha){ //cut branches
+            x = actionX;
+            y = actionY;
+            //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
+            return u;
+          }
+        } else {
+          if(u<=alpha){ //cut branches
+            x = actionX;
+            y = actionY;
+            //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
+            return u;
+          }
         }
+
 
         if(beta>u)
           beta=u;
@@ -207,6 +230,8 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
   int startActionY = -1;
   int endActionX = -1;
   int endActionY = -1;
+  int randomizeCount = 1;
+  bool isEqualChoosen = false;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
@@ -218,23 +243,45 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
             if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && empty
               plateau->addNewPawn(k,l,turn); //adding the pawn on this position
               int tmp = turnMinPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
-              if(tmp>u){ //max
+
+              if(tmp>u) {
+                randomizeCount = 1;
+              } else if(tmp<=u) {
+                randomizeCount++;
+              }
+
+              int chances = rand()%randomizeCount;
+              if(tmp>=u && chances==0){
                 startActionX = i;
                 startActionY = j;
                 endActionX = k;
                 endActionY = l;
+                if(tmp==u)
+                  isEqualChoosen = true;
                 u = tmp;
               }
-
-              if(u>=beta){ //cut branches
-                startX = startActionX;
-                startY = startActionY;
-                endX = endActionX;
-                endY = endActionY;
-                plateau->addNewPawn(k,l,0);
-                plateau->addNewPawn(i,j,turn);
-                return u;
+              if(isEqualChoosen){
+                if(u>beta){ //cut branches
+                  startX = startActionX;
+                  startY = startActionY;
+                  endX = endActionX;
+                  endY = endActionY;
+                  plateau->addNewPawn(k,l,0);
+                  plateau->addNewPawn(i,j,turn);
+                  return u;
+                }
+              } else {
+                if(u>=beta){ //cut branches
+                  startX = startActionX;
+                  startY = startActionY;
+                  endX = endActionX;
+                  endY = endActionY;
+                  plateau->addNewPawn(k,l,0);
+                  plateau->addNewPawn(i,j,turn);
+                  return u;
+                }
               }
+
 
               if(alpha<u)
                 alpha=u;
@@ -270,6 +317,8 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
   int startActionY = -1;
   int endActionX = -1;
   int endActionY = -1;
+  int randomizeCount = 1;
+  bool isEqualChoosen = false;
 
   for(int i=0; i<5; i++){
     for(int j=0; j<5 ;j++){
@@ -281,22 +330,43 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
             if(k>=0 && k<5 && l>=0 && l<5 && (k!=i || l!=j) && (plateau->getGameMatrix()[k][l]==0)){ //on the board && not the same position && empty
               plateau->addNewPawn(k,l,turn); //adding the pawn on this position
               int tmp = turnMaxPhase3(plateau, p-1, alpha, beta, startX, startY, endX, endY, player, (turn%2)+1);
-              if(tmp<u){ //min
+              if(tmp<u) {
+                randomizeCount = 1;
+              } else if(tmp<=u) {
+                randomizeCount++;
+              }
+
+              int chances = rand()%randomizeCount;
+              if(tmp<=u && chances==0){
                 startActionX = i;
                 startActionY = j;
                 endActionX = k;
                 endActionY = l;
+                if(tmp==u)
+                  isEqualChoosen = true;
                 u = tmp;
               }
 
-              if(u<=alpha){ //cut branches
-                startX = startActionX;
-                startY = startActionY;
-                endX = endActionX;
-                endY = endActionY;
-                plateau->addNewPawn(k,l,0);
-                plateau->addNewPawn(i,j,turn);
-                return u;
+              if(isEqualChoosen){
+                if(u<alpha){ //cut branches
+                  startX = startActionX;
+                  startY = startActionY;
+                  endX = endActionX;
+                  endY = endActionY;
+                  plateau->addNewPawn(k,l,0);
+                  plateau->addNewPawn(i,j,turn);
+                  return u;
+                }
+              } else {
+                if(u<=alpha){ //cut branches
+                  startX = startActionX;
+                  startY = startActionY;
+                  endX = endActionX;
+                  endY = endActionY;
+                  plateau->addNewPawn(k,l,0);
+                  plateau->addNewPawn(i,j,turn);
+                  return u;
+                }
               }
 
               if(beta>u)
