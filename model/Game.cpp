@@ -25,8 +25,6 @@ void Game::loop() {
       switch(gameChangement){
         case 2: phase = 2; //Start
           break;
-        //case 3: resetGame();
-        //  break;
       }
 
     } else if(phase == 2) {
@@ -38,7 +36,6 @@ void Game::loop() {
           resetGame();
         }
         else if(coords.size() >= 2) { //If there has been a click on the "plateau"
-          cout << "Clicked at: " << coords[0] << ":" << coords[1] << endl;
           int x = coords[0];
           int y = coords[1];
           if(plateau->isFreeAt(x,y)) {
@@ -55,19 +52,17 @@ void Game::loop() {
         vector<int> decision;
 
         // Random for the first pawn
-        /*int x,y;
+        int x,y;
         if(first_pawn==0){   //Set to 0 only for the first move of the AI to generate the first random point
             do{
              x=rand()%5;
              y=rand()%5;
-             cout << "x:"<<x<<" y:"<<y<<endl;
            }while(plateau->getValue(x,y)!=0);
-           cout<<"hello";
            decision.push_back(x);
            decision.push_back(y);
            first_pawn=1;
         }
-        else */decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
+        else decision = AI::getDecision(phase, turn, gameFrame->getCurrentPlayerState(turn), plateau);
 
 
         //we add the pawn where the AI decided
@@ -101,7 +96,6 @@ void Game::loop() {
             if(coords.size() >= 2) {
                x2 = coords[0];
                y2 = coords[1];
-               //cout << "Points: " << x1 << ":" << y1 << "    " << x2 << ":" << y2 << endl;
                if (isItAt1From(x1,x2,y1,y2) && (plateau->getValue(x1,y1) == turn) && (plateau->isFreeAt(x2,y2))){ /* Start the drag function if the click is on a player pawn and if the second cell if empty*/
                   plateau->moveFromTo(x1, y1, x2, y2);
                   switchTurn();
@@ -150,17 +144,6 @@ void Game::switchTurn() {
   } else if(turn  == 1) {
     turn = 2;
   }
-  MinMax minMax;
-  cout << "eval : " << minMax.eval(plateau->getGameMatrix(), 2) << endl;
-  /*
-  for(int i=0; i<5; i++){
-    for(int j=0; j<5 ;j++){
-      cout << plateau->getGameMatrix()[i][j] << " ";
-    }
-    cout << endl;
-  }
-  cout << "ici" << endl;
-*/
 }
 
 bool Game::isItAt1From(int x1, int x2, int y1, int y2) {

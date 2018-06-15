@@ -13,8 +13,6 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
 
       turnMaxPhase2(plateau, profondeur, alpha, beta, x, y, player, turn);
 
-      cout << "minMax move phase2 : " <<  x << " " <<  y << endl;
-
       move.push_back(x); //x
       move.push_back(y); //y
     }
@@ -27,8 +25,6 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
       int endY = -1;
 
       turnMaxPhase3(plateau, profondeur, alpha, beta, startX, startY, endX, endY, player, turn);
-
-      cout << "minMax move phase 3 : " <<  startX << " " <<  startY << " " << endX << " " << endY << endl;
 
       move.push_back(startX);
       move.push_back(startY);
@@ -43,27 +39,12 @@ vector<int> MinMax::minMax(Plateau* plateau, int profondeur, int player, int tur
 
 int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, int &y, int player, int turn){
 
-  //cout << "maxphase2 player : " << player << " turn : " << turn << endl;
-
-  /*int ev = eval(plateau->getGameMatrix(), player);
-  cout << "Turn max, eval = " << ev << endl;
-  for(int i=0; i<5; i++){
-    for(int j=0; j<5 ;j++){
-      cout << plateau->getGameMatrix()[i][j] << " ";
-    }
-    cout << endl;
-  }*/
-
-
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
     return tmp;
   }
 
   if(plateau->nbPawns()==8){
-    //TODO phase 3
-    /*int tmp=eval(plateau->getGameMatrix(), player);
-    return tmp;*/
     int endX;
     int endY;
     return turnMaxPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
@@ -83,24 +64,12 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
           actionX = i;
           actionY = j;
           u = tmp;
-          /*
-          int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn min, eval = " << ev << endl;
-          for(int i=0; i<5; i++){
-            for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
-            }
-            cout << endl;
-          }
-          cout << endl;*/
-          //cout << "MAX u=tmp  " << u << " " << *alpha << endl;
         }
         plateau->addNewPawn(i,j,0);
 
         if(u>=beta){ //cut branches
           x = actionX;
           y = actionY;
-          //cout << "cut branches max move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
@@ -112,36 +81,17 @@ int MinMax::turnMaxPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
 
   x = actionX;
   y = actionY;
-  //cout << "end max move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
 int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, int &y, int player, int turn){
 
-  //cout << "minphase2 player : " << player << " turn : " << turn << endl;
-
-  /*int ev = eval(plateau->getGameMatrix(), player);
-  cout << "Turn min, eval = " << ev << endl;
-  for(int i=0; i<5; i++){
-    for(int j=0; j<5 ;j++){
-      cout << plateau->getGameMatrix()[i][j] << " ";
-    }
-    cout << endl;
-  }
-  cout << endl;*/
-
-
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
-    //cout << "NB pawns = " << plateau->nbPawns() << endl;
-    //cout << "MIN eval = " << tmp << endl;
     return tmp;
   }
 
   if(plateau->nbPawns()==8){
-    //TODO phase 3
-    /*int tmp=eval(plateau->getGameMatrix(), player);
-    return tmp;*/
     int endX;
     int endY;
     return turnMinPhase3(plateau, p-1, alpha, beta, x, y, endX, endY, player, turn);
@@ -160,24 +110,12 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
           actionX = i;
           actionY = j;
           u = tmp;
-          /*
-          int ev = eval(plateau->getGameMatrix(), player);
-          cout << "Turn max, eval = " << ev << endl;
-          for(int i=0; i<5; i++){
-            for(int j=0; j<5 ;j++){
-              cout << plateau->getGameMatrix()[i][j] << " ";
-            }
-            cout << endl;
-          }
-          cout << endl;*/
-          //cout << "MIN u=tmp  " << u << " " << *beta << endl;
         }
         plateau->addNewPawn(i,j,0);
 
         if(u<=alpha){ //cut branches
           x = actionX;
           y = actionY;
-          //cout << "cut branches min move : " <<  *x << " " <<  *y << endl;
           return u;
         }
 
@@ -189,13 +127,10 @@ int MinMax::turnMinPhase2(Plateau* plateau, int p, int alpha, int beta, int &x, 
 
   x = actionX;
   y = actionY;
-  //cout << "end min move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
 int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
-
-  //cout << "maxphase3 player : " << player << " turn : " << turn << endl;
 
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
@@ -252,13 +187,10 @@ int MinMax::turnMaxPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
   startY = startActionY;
   endX = endActionX;
   endY = endActionY;
-  //cout << "end max move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
 int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &startX, int &startY, int &endX, int &endY, int player, int turn){
-
-  //cout << "minphase3 player : " << player << " turn : " << turn << endl;
 
   if(plateau->hasSomeoneWon() || p==0){
     int tmp=eval(plateau->getGameMatrix(), player);
@@ -315,7 +247,6 @@ int MinMax::turnMinPhase3(Plateau* plateau, int p, int alpha, int beta, int &sta
   startY = startActionY;
   endX = endActionX;
   endY = endActionY;
-  //cout << "end max move : " <<  *x << " " <<  *y << endl;
   return u;
 }
 
